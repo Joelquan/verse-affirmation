@@ -214,6 +214,56 @@
     font-size:1.02rem;letter-spacing:.3em;text-transform:uppercase;
     margin:20px 0 2px;font-weight:bold;
   }
+  .growbox{
+    background:
+      var(--tex-card),
+      linear-gradient(168deg, var(--card-a), var(--card-b));
+    border:1px solid var(--card-border);border-radius:18px;
+    box-shadow:0 20px 44px var(--shadow2), inset 0 1px 0 var(--hl);
+    padding:22px 24px;margin-top:14px;
+  }
+  .growareas{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px;}
+  .growarea, .growlen{
+    font-family:inherit;font-size:.95rem;cursor:pointer;
+    background:linear-gradient(180deg, var(--nav-bg-a), var(--nav-bg-b));
+    color:var(--nav-ink);border:1px solid var(--nav-border);border-radius:10px;
+    padding:11px 10px;
+    box-shadow:0 3px 10px var(--shadow2), inset 0 1px 0 var(--hl);
+  }
+  .growarea.on, .growlen.on{
+    font-weight:bold;
+    background:linear-gradient(180deg, var(--btn-a), var(--btn-b));
+    color:var(--btn-ink);border-color:var(--btn-border);
+  }
+  .growarea.soon{opacity:.45;cursor:default;}
+  .growarea .soon-tag{
+    display:block;font-size:.64rem;letter-spacing:.18em;
+    text-transform:uppercase;margin-top:3px;color:var(--label);
+  }
+  .growlengths{display:flex;gap:8px;margin-top:10px;}
+  .growlen{flex:1;}
+  .grownote{
+    text-align:center;color:var(--label);font-size:.9rem;
+    line-height:1.6;margin:12px auto 0;max-width:520px;
+  }
+  .growstart{
+    width:100%;margin-top:16px;font-family:inherit;font-size:1.02rem;
+    letter-spacing:.05em;padding:14px;border-radius:12px;cursor:pointer;
+    background:linear-gradient(180deg, var(--btn-a), var(--btn-b));
+    color:var(--btn-ink);border:1px solid var(--btn-border);
+    box-shadow:0 10px 24px var(--shadow2), inset 0 1px 0 var(--hl);
+  }
+  .growstart[disabled]{opacity:.45;cursor:default;}
+  #growShareBtn{background:linear-gradient(180deg, var(--btn-a), var(--btn-b));color:var(--btn-ink);border:1px solid var(--btn-border);}
+  #growShareBtn:hover{filter:brightness(1.08);}
+  #growSaveBtn{background:linear-gradient(180deg, var(--btn2-a), var(--btn2-b));color:var(--btn2-ink);border:1px solid var(--btn2-border);}
+  #growSaveBtn:hover{filter:brightness(1.06);}
+  #growSaveBtn.saved{
+    background:linear-gradient(180deg, var(--saved-a), var(--saved-b));
+    color:var(--saved-ink);
+    border:1px solid var(--btn-border);
+    font-weight:bold;
+  }
   .biblebar{
     display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;
     margin:14px 0 4px;
@@ -616,6 +666,87 @@
   </footer>
   </div>
 
+  <div class="view" id="view-grow" hidden>
+    <div id="growOnboard">
+      <div class="viewhead">Grow</div>
+      <p class="grownote">Choose one area to grow in, and one season. Inside Grow you see only that journey, three times a day, until the season is complete.</p>
+      <div class="growbox">
+        <div class="settingslabel">1 &middot; Choose your area</div>
+        <div class="growareas" id="growAreas"></div>
+        <div class="settingslabel">2 &middot; Choose your season</div>
+        <div class="growlengths">
+          <button type="button" class="growlen" id="growLen15">15 days</button>
+          <button type="button" class="growlen" id="growLen30">30 days</button>
+        </div>
+        <p class="grownote" id="growPickNote"></p>
+        <button type="button" class="growstart" id="growStart" disabled>Begin the season</button>
+      </div>
+    </div>
+    <div id="growSeason" hidden>
+    <header>
+      <div class="brandline" id="growDateline"></div>
+      <div class="scene" id="growSceneBox" data-time="morning">
+        <div id="growSceneArt"></div>
+        <div class="greet">
+          <div class="greet-line" id="growGreetLine">Good morning</div>
+          <div class="greet-slot" id="growGreetSlot"></div>
+        </div>
+      </div>
+    </header>
+    <main class="card">
+      <div class="slotcaption" id="growSlotCaption"></div>
+      <div class="sealrow"><div class="seal" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="63" cy="64" r="52" fill="#5E170E" opacity=".55"/><circle cx="60" cy="60" r="52" fill="#7E241C"/><circle cx="60" cy="60" r="52" fill="none" stroke="#5E170E" stroke-width="3"/><circle cx="60" cy="60" r="41" fill="none" stroke="#F0D9B5" stroke-width="1.6" opacity=".65"/><path d="M60 33 V79 M45 49 H75" stroke="#F3E2BC" stroke-width="7" stroke-linecap="round" fill="none"/><text x="60" y="99" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11" letter-spacing="2" fill="#F3E2BC">MW</text></svg></div></div>
+    <section class="block verse">
+      <button type="button" class="cover" id="gcover0" aria-expanded="false" aria-controls="gphase0">
+        <span class="cover-seal" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width="3" opacity=".5"/><circle cx="60" cy="60" r="41" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".7"/><path d="M60 31 C68 43 77 50 77 62 A17 17 0 1 1 43 62 C43 52 49 46 53 40 C55 45 57 48 60 50 C58 43 58 37 60 31 Z" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><text x="60" y="99" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11" letter-spacing="2" fill="currentColor">MW</text></svg></span>
+        <span class="cover-label">The Verse</span>
+        <span class="cover-hint">Tap to reveal</span>
+      </button>
+      <div class="phase-body" id="gphase0">
+        <h2>The Verse</h2>
+        <p class="verse-text" id="gverseText"></p>
+        <p class="verse-ref" id="gverseRef"></p>
+        <p class="nkjvnote" id="growNkjvNote" hidden></p>
+      </div>
+    </section>
+    <section class="block affirmation">
+      <button type="button" class="cover" id="gcover1" aria-expanded="false" aria-controls="gphase1">
+        <span class="cover-seal" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width="3" opacity=".5"/><circle cx="60" cy="60" r="41" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".7"/><path d="M60 33 L66 41 V59 H54 V41 Z M44 65 H76 M60 65 V74" stroke="currentColor" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none"/><circle cx="60" cy="80" r="3.5" fill="currentColor"/><text x="60" y="99" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11" letter-spacing="2" fill="currentColor">MW</text></svg></span>
+        <span class="cover-label">The Affirmation</span>
+        <span class="cover-hint">Tap to reveal</span>
+      </button>
+      <div class="phase-body" id="gphase1">
+        <h2>The Affirmation</h2>
+        <p class="affirmation-text" id="gaffirmText"></p>
+      </div>
+    </section>
+    <section class="block action">
+      <button type="button" class="cover" id="gcover2" aria-expanded="false" aria-controls="gphase2">
+        <span class="cover-seal" aria-hidden="true"><svg viewBox="0 0 120 120"><circle cx="60" cy="60" r="52" fill="none" stroke="currentColor" stroke-width="3" opacity=".5"/><circle cx="60" cy="60" r="41" fill="none" stroke="currentColor" stroke-width="1.6" opacity=".7"/><path d="M48 33 C54 33 57 38 56 44 C55 49 54 52 54 57 C54 63 52 67 48 67 C44 67 42 63 42 57 C42 52 41 49 40 44 C39 38 42 33 48 33 Z M70 50 C76 50 79 55 78 61 C77 66 76 69 76 74 C76 80 74 84 70 84 C66 84 64 80 64 74 C64 69 63 66 62 61 C61 55 64 50 70 50 Z" fill="currentColor"/><circle cx="56" cy="27" r="3.5" fill="currentColor"/><circle cx="65" cy="44" r="3.5" fill="currentColor"/><text x="60" y="99" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif" font-size="11" letter-spacing="2" fill="currentColor">MW</text></svg></span>
+        <span class="cover-label">The Action</span>
+        <span class="cover-hint">Tap to reveal</span>
+      </button>
+      <div class="phase-body" id="gphase2">
+        <h2>The Action</h2>
+        <p class="action-text" id="gactionText"></p>
+      </div>
+    </section>
+    </main>
+    <footer class="actions">
+      <button id="growShareBtn" type="button">Share</button>
+      <button id="growSaveBtn" type="button">Save</button>
+    </footer>
+    </div>
+    <div id="growDone" hidden>
+      <div class="viewhead">Grow</div>
+      <div class="growbox">
+        <div class="settingslabel">Season complete</div>
+        <p class="grownote" id="growDoneText"></p>
+        <button type="button" class="growstart" id="growAgain">Choose a new season</button>
+      </div>
+    </div>
+  </div>
+
   <div class="view" id="view-bible" hidden>
     <div class="viewhead">Bible</div>
     <div class="verbar" role="group" aria-label="Bible version">
@@ -664,6 +795,7 @@
 </div>
 <nav class="bottomnav" aria-label="Main">
   <button type="button" class="navitem on" data-view="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 9.8V20h11V9.8"/><path d="M10 20v-5h4v5"/></svg><span>Home</span><span class="dot" aria-hidden="true"></span></button>
+  <button type="button" class="navitem" data-view="grow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-7.5"/><path d="M12 13.5C12 10 14.6 7.9 18.5 7.9c0 3.9-2.3 6.1-6.5 6.1"/><path d="M12 11.5C12 8.4 9.9 6.4 6.2 6.4c0 3.7 2.1 5.8 5.8 5.8"/></svg><span>Grow</span><span class="dot" aria-hidden="true"></span></button>
   <button type="button" class="navitem" data-view="bible"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.2C10 4.7 7.6 4.2 5 4.2v13.6c2.6 0 5 .5 7 2 2-1.5 4.4-2 7-2V4.2c-2.6 0-5 .5-7 2z"/><path d="M12 6.2v13.6"/></svg><span>Bible</span><span class="dot" aria-hidden="true"></span></button>
   <button type="button" class="navitem" data-view="saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.2h10V20l-5-3.9L7 20z"/></svg><span>Saved</span><span class="dot" aria-hidden="true"></span></button>
   <button type="button" class="navitem" data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 3.6v2.5M12 17.9v2.5M3.6 12h2.5M17.9 12h2.5M6.1 6.1l1.7 1.7M16.2 16.2l1.7 1.7M17.9 6.1l-1.7 1.7M7.8 16.2l-1.7 1.7"/></svg><span>Settings</span><span class="dot" aria-hidden="true"></span></button>
@@ -1365,12 +1497,13 @@ function renderSaved(){
 let currentView = "home";
 function showView(name){
   currentView = name;
-  const views = ["home", "bible", "saved", "settings"];
+  const views = ["home", "grow", "bible", "saved", "settings"];
   for (let i = 0; i < views.length; i++)
     document.getElementById("view-" + views[i]).hidden = views[i] !== name;
   const items = document.querySelectorAll(".navitem");
   for (let i = 0; i < items.length; i++)
     items[i].classList.toggle("on", items[i].getAttribute("data-view") === name);
+  if (name === "grow") renderGrow();
   if (name === "bible") ensureBible();
   if (name === "saved") renderSaved();
   window.scrollTo(0, 0);
@@ -1619,6 +1752,7 @@ function clockTick(){
       renderSlot();
     }
   }
+  if (currentView === "grow") renderGrow();
 }
 setInterval(clockTick, 30000);
 document.addEventListener("visibilitychange", function(){
@@ -1675,23 +1809,32 @@ function shareTextForDay(){
     "AFFIRMATION\n" + s.affirmation + "\n\n" +
     "ACTION\n" + s.action;
 }
+let shareContext = "home";
 function openShareMenu(){
-  document.getElementById("shareDayNum").textContent = currentDay;
-  document.getElementById("shareSlotLine").textContent =
-    SLOTS[currentSlot].name + ": " + SLOTS[currentSlot].title;
+  if (shareContext === "grow"){
+    const g = growLoad();
+    document.getElementById("shareDayNum").textContent = growSeasonDay(g);
+    document.getElementById("shareSlotLine").textContent =
+      "Grow \u00b7 " + g.area + " \u00b7 Day " + growSeasonDay(g) + " of " +
+      growEffectiveLength(g) + " \u00b7 " + SLOTS[growSlot].name;
+  } else {
+    document.getElementById("shareDayNum").textContent = currentDay;
+    document.getElementById("shareSlotLine").textContent =
+      SLOTS[currentSlot].name + ": " + SLOTS[currentSlot].title;
+  }
   document.getElementById("shareMenu").classList.add("open");
 }
 function closeShareMenu(){
   document.getElementById("shareMenu").classList.remove("open");
 }
-document.getElementById("shareBtn").addEventListener("click", openShareMenu);
+document.getElementById("shareBtn").addEventListener("click", function(){ shareContext = "home"; openShareMenu(); });
 document.getElementById("shareCancelBtn").addEventListener("click", closeShareMenu);
 document.getElementById("shareMenu").addEventListener("click", function(ev){
   if(ev.target === this) closeShareMenu();
 });
 document.getElementById("shareTextBtn").addEventListener("click", function(){
   closeShareMenu();
-  const text = shareTextForDay();
+  const text = shareContext === "grow" ? growShareText() : shareTextForDay();
   if(navigator.share){
     navigator.share({ title: "My Words", text: text }).catch(function(){});
   } else if(navigator.clipboard && navigator.clipboard.writeText){
@@ -1876,11 +2019,16 @@ function downloadBlob(blob, name){
 }
 document.getElementById("sharePicBtn").addEventListener("click", function(){
   closeShareMenu();
-  const e = DATA[currentDay - 1][currentSlot];
+  const isGrow = shareContext === "grow";
+  const e = isGrow ? DATA[growArcDay - 1][growSlot] : DATA[currentDay - 1][currentSlot];
   let canvas;
-  try { canvas = buildCardCanvas(e, SLOTS[currentSlot].name + ": " + SLOTS[currentSlot].title); }
+  try { canvas = buildCardCanvas(e, isGrow
+    ? "Grow \u00b7 " + growLoad().area + " \u00b7 " + SLOTS[growSlot].name
+    : SLOTS[currentSlot].name + ": " + SLOTS[currentSlot].title); }
   catch(err){ toast("Picture could not be made on this device."); return; }
-  const fileName = "mywords-day-" + currentDay + "-" + currentSlot + ".png";
+  const fileName = isGrow
+    ? "mywords-grow-day-" + growSeasonDay(growLoad()) + "-" + growSlot + ".png"
+    : "mywords-day-" + currentDay + "-" + currentSlot + ".png";
   canvas.toBlob(function(blob){
     if(!blob){ toast("Picture could not be made on this device."); return; }
     let usedShare = false;
@@ -1898,6 +2046,276 @@ document.getElementById("sharePicBtn").addEventListener("click", function(){
     if(!usedShare) downloadBlob(blob, fileName);
   }, "image/png");
 });
+
+/* ===== Grow: one area, one season, locked in (Joel, Nov 14, 2026).
+   General mode is untouched. A Grow season draws only on the year's
+   own arcs in data.json: Faith (the Faith arc), Wisdom (the Wisdom
+   arc), Prosperity (the Provision and Work arc), and Marriage (the
+   Family and Marriage arc). Every other area is Coming soon and
+   cannot be chosen yet. No content is invented; a season's days are
+   the arc's days in order, three slots a day, clock driven like Home. */
+const GROW_KEY = "dailyWordFrameGrow";
+const GROW_AREAS = [
+  { name: "Love", theme: null },
+  { name: "Faith", theme: "Faith" },
+  { name: "Marriage", theme: "Family and Marriage" },
+  { name: "Leadership", theme: null },
+  { name: "Hope", theme: null },
+  { name: "Forgiveness", theme: null },
+  { name: "Prosperity", theme: "Provision and Work" },
+  { name: "Wisdom", theme: "Wisdom" },
+  { name: "Focus", theme: null },
+  { name: "Relationships", theme: null },
+  { name: "Fear of God", theme: null },
+  { name: "Love for the Lord", theme: null },
+  { name: "Wife", theme: null },
+  { name: "Husband", theme: null },
+  { name: "Father", theme: null },
+  { name: "Mother", theme: null }
+];
+function growArcDays(theme){
+  const days = [];
+  for (let i = 0; i < DATA.length; i++)
+    if (DATA[i].theme === theme) days.push(DATA[i].day);
+  return days;
+}
+function growArea(name){
+  for (let i = 0; i < GROW_AREAS.length; i++)
+    if (GROW_AREAS[i].name === name) return GROW_AREAS[i];
+  return null;
+}
+function growLoad(){
+  try {
+    const g = JSON.parse(localStorage.getItem(GROW_KEY));
+    if (g && growArea(g.area) && growArea(g.area).theme &&
+        (g.length === 15 || g.length === 30) &&
+        typeof g.start === "string") return g;
+  } catch(e){}
+  return null;
+}
+function growSaveState(g){
+  try { localStorage.setItem(GROW_KEY, JSON.stringify(g)); } catch(e){}
+}
+function growClear(){
+  try { localStorage.removeItem(GROW_KEY); } catch(e){}
+}
+function growLocalDateStr(d){
+  function p(n){ return String(n).padStart(2, "0"); }
+  return d.getFullYear() + "-" + p(d.getMonth() + 1) + "-" + p(d.getDate());
+}
+function growSeasonDay(g){
+  const p = g.start.split("-");
+  const start = new Date(+p[0], +p[1] - 1, +p[2]);
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const sd = Math.round((today - start) / 86400000) + 1;
+  return Math.max(1, sd);
+}
+function growEffectiveLength(g){
+  const a = growArea(g.area);
+  if (!a || !a.theme) return g.length;
+  return Math.min(g.length, growArcDays(a.theme).length);
+}
+/* Onboarding: two choices only, an area and a season length. */
+let growPick = { area: null, len: null };
+function growSyncPick(){
+  const areas = document.querySelectorAll(".growarea");
+  for (let i = 0; i < areas.length; i++)
+    areas[i].classList.toggle("on", areas[i].getAttribute("data-grow-area") === growPick.area);
+  document.getElementById("growLen15").classList.toggle("on", growPick.len === 15);
+  document.getElementById("growLen30").classList.toggle("on", growPick.len === 30);
+  let msg = "";
+  if (growPick.area){
+    const arcLen = growArcDays(growArea(growPick.area).theme).length;
+    if (growPick.len && growPick.len > arcLen)
+      msg = "The " + growPick.area + " journey holds " + arcLen + " days, so this season runs " + arcLen + " days.";
+    else if (growPick.len)
+      msg = "Growing in " + growPick.area + " for " + growPick.len + " days, three times a day.";
+    else
+      msg = "Growing in " + growPick.area + ". Now choose your season.";
+  }
+  document.getElementById("growPickNote").textContent = msg;
+  document.getElementById("growStart").disabled = !(growPick.area && growPick.len);
+}
+/* The season day itself: the Home card design and reveal behavior,
+   fed by the arc day that this season day maps to. */
+let growSlot = slotForNow();
+let growArcDay = null;
+let growShownKey = "";
+let growRevealStep = 0;
+function renderGrow(){
+  const g = growLoad();
+  const onboard = document.getElementById("growOnboard");
+  const season = document.getElementById("growSeason");
+  const done = document.getElementById("growDone");
+  if (!g){
+    onboard.hidden = false; season.hidden = true; done.hidden = true;
+    growShownKey = "";
+    return;
+  }
+  const L = growEffectiveLength(g);
+  const sd = growSeasonDay(g);
+  if (sd > L){
+    onboard.hidden = true; season.hidden = true; done.hidden = false;
+    document.getElementById("growDoneText").textContent =
+      "You finished " + L + " days of growing in " + g.area + ". Well done. " +
+      "The door is open: choose a new area and a new season whenever you are ready.";
+    growShownKey = "";
+    return;
+  }
+  onboard.hidden = true; done.hidden = true; season.hidden = false;
+  growSlot = slotForNow();
+  const key = g.area + "|" + sd + "|" + growSlot;
+  if (key === growShownKey) return;
+  growShownKey = key;
+  const arc = growArcDays(growArea(g.area).theme);
+  growArcDay = arc[sd - 1];
+  const e = DATA[growArcDay - 1];
+  const s = e[growSlot];
+  const S = SLOTS[growSlot];
+  document.getElementById("growDateline").textContent =
+    "Grow \u00b7 " + g.area + " \u00b7 Day " + sd + " of " + L;
+  const r = resolveVerse(s);
+  document.getElementById("gverseText").textContent = r.text;
+  document.getElementById("gverseRef").textContent = r.label;
+  document.getElementById("growNkjvNote").hidden = !r.nkjv;
+  if (bibleVersion !== "kjv" && !bibleDataCache[bibleVersion])
+    loadBibleData(bibleVersion).then(function(){
+      growShownKey = "";
+      if (currentView === "grow") renderGrow();
+    });
+  document.getElementById("gaffirmText").textContent = s.affirmation;
+  document.getElementById("gactionText").textContent = s.action;
+  document.getElementById("growGreetLine").textContent = S.greet;
+  document.getElementById("growGreetSlot").textContent = S.name + " \u00b7 Growing in " + g.area;
+  document.getElementById("growSlotCaption").textContent = g.area + " \u00b7 Day " + sd + " of " + L;
+  const box = document.getElementById("growSceneBox");
+  box.setAttribute("data-time", growSlot);
+  document.querySelector("#view-grow .card").style.setProperty("--slot-edge",
+    { morning: "#DFA53A", afternoon: "#4E97C4", evening: "#7A68B0" }[growSlot]);
+  document.getElementById("growSceneArt").innerHTML = sceneSVG(growSlot, seasonForDay(growArcDay));
+  growResetVeil();
+  growUpdateSaveBtn();
+}
+function growResetVeil(){
+  growRevealStep = 0;
+  for (let i = 0; i < 3; i++){
+    const c = document.getElementById("gcover" + i);
+    c.style.display = "";
+    c.setAttribute("aria-expanded", "false");
+    c.classList.toggle("waiting", i > 0);
+    document.getElementById("gphase" + i).classList.remove("open");
+  }
+}
+function growRevealPhase(i){
+  if (i < growRevealStep) return;
+  if (i > growRevealStep){
+    const c = document.getElementById("gcover" + i);
+    c.classList.remove("shake");
+    void c.offsetWidth;
+    c.classList.add("shake");
+    toast("The three phases open in order. Begin with " + PHASE_NAMES[growRevealStep] + ".");
+    return;
+  }
+  const c = document.getElementById("gcover" + i);
+  c.style.display = "none";
+  c.setAttribute("aria-expanded", "true");
+  document.getElementById("gphase" + i).classList.add("open");
+  growRevealStep++;
+  if (growRevealStep < 3)
+    document.getElementById("gcover" + growRevealStep).classList.remove("waiting");
+}
+function growSaveKey(){ return growArcDay + ":" + growSlot; }
+function growUpdateSaveBtn(){
+  const btn = document.getElementById("growSaveBtn");
+  if (getSaved().includes(growSaveKey())){
+    btn.textContent = "Saved";
+    btn.classList.add("saved");
+  } else {
+    btn.textContent = "Save";
+    btn.classList.remove("saved");
+  }
+}
+function growShareText(){
+  const g = growLoad();
+  const e = DATA[growArcDay - 1];
+  const s = e[growSlot];
+  const rv = resolveVerse(s);
+  const S = SLOTS[growSlot];
+  return "My Words \u00b7 Grow \u00b7 " + g.area + " \u00b7 Day " + growSeasonDay(g) +
+    " of " + growEffectiveLength(g) + " \u00b7 " + S.name + "\n\n" +
+    "VERSE\n" + rv.text + "\n" + rv.label + (rv.nkjv ? "\n" + NKJV_COPY : "") + "\n\n" +
+    "AFFIRMATION\n" + s.affirmation + "\n\n" +
+    "ACTION\n" + s.action;
+}
+(function wireGrow(){
+  const wrap = document.getElementById("growAreas");
+  GROW_AREAS.forEach(function(a){
+    const b = document.createElement("button");
+    b.type = "button";
+    b.className = "growarea" + (a.theme ? "" : " soon");
+    b.setAttribute("data-grow-area", a.name);
+    b.textContent = a.name;
+    if (a.theme){
+      b.addEventListener("click", function(){
+        growPick.area = a.name;
+        growSyncPick();
+      });
+    } else {
+      const t = document.createElement("span");
+      t.className = "soon-tag";
+      t.textContent = "Coming soon";
+      b.appendChild(t);
+      b.setAttribute("aria-disabled", "true");
+    }
+    wrap.appendChild(b);
+  });
+  document.getElementById("growLen15").addEventListener("click", function(){
+    growPick.len = 15; growSyncPick();
+  });
+  document.getElementById("growLen30").addEventListener("click", function(){
+    growPick.len = 30; growSyncPick();
+  });
+  document.getElementById("growStart").addEventListener("click", function(){
+    if (!growPick.area || !growPick.len) return;
+    growSaveState({ area: growPick.area, length: growPick.len, start: growLocalDateStr(new Date()) });
+    growShownKey = "";
+    renderGrow();
+    toast("Your " + growPick.area + " season has begun. Day 1 of " + growEffectiveLength(growLoad()) + ".");
+  });
+  document.getElementById("growAgain").addEventListener("click", function(){
+    growClear();
+    growPick = { area: null, len: null };
+    growSyncPick();
+    growShownKey = "";
+    renderGrow();
+  });
+  for (let i = 0; i < 3; i++){
+    (function(idx){
+      document.getElementById("gcover" + idx).addEventListener("click", function(){ growRevealPhase(idx); });
+    })(i);
+  }
+  document.getElementById("growShareBtn").addEventListener("click", function(){
+    shareContext = "grow"; openShareMenu();
+  });
+  document.getElementById("growSaveBtn").addEventListener("click", function(){
+    let saved = getSaved();
+    const key = growSaveKey();
+    if (saved.includes(key)){
+      saved = saved.filter(function(x){ return x !== key; });
+      setSaved(saved);
+      toast("Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " removed from saved.");
+    } else {
+      saved.push(key);
+      setSaved(saved);
+      toast("Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " saved.");
+    }
+    growUpdateSaveBtn();
+    renderSaved();
+  });
+  document.getElementById("growNkjvNote").textContent = NKJV_COPY;
+})();
+
 render(currentDay);
 if (bibleVersion !== "kjv") loadBibleData(bibleVersion).then(function(){ if (bibleDataCache[bibleVersion]) applyHomeVerse(); });
 </script>
