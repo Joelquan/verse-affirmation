@@ -1296,7 +1296,7 @@ function dateLabelForDay(day){
   const d = new Date(new Date().getFullYear(), 0, day);
   return names[d.getMonth()] + " " + d.getDate() + ordinalSuffix(d.getDate());
 }
-const GROW_SAVE_RE = /^grow:(Love|Faith|Marriage|Leadership|Hope|Forgiveness|Prosperity|Wisdom|Focus|Relationships|Fear of God|Love for the Lord|Wife|Husband|Father|Mother):([1-9]|[12][0-9]|30):(morning|afternoon|evening)$/;
+const GROW_SAVE_RE = /^grow:(Love|Faith|Marriage|Leadership|Hope|Forgiveness|Prosperity|Wisdom|Focus|Relationships|Fear of God|Love for the Lord|Wife|Husband|Father|Mother|Identity|Healing|Entrepreneurship|Courage):([1-9]|[12][0-9]|30):(morning|afternoon|evening)$/;
 function getSaved(){
   try {
     const raw = JSON.parse(localStorage.getItem(SAVE_KEY)) || [];
@@ -2115,6 +2115,7 @@ document.getElementById("sharePicBtn").addEventListener("click", function(){
    the arc's days in order, three slots a day, clock driven like Home. */
 const GROW_KEY = "dailyWordFrameGrow";
 const GROW_AREAS = [
+  { name: "Identity", theme: "Identity in Christ" },
   { name: "Love", theme: null, growOnly: true },
   { name: "Faith", theme: "Faith" },
   { name: "Marriage", theme: "Family and Marriage" },
@@ -2130,7 +2131,10 @@ const GROW_AREAS = [
   { name: "Wife", theme: null, growOnly: true },
   { name: "Husband", theme: null, growOnly: true },
   { name: "Father", theme: null, growOnly: true },
-  { name: "Mother", theme: null, growOnly: true }
+  { name: "Mother", theme: null, growOnly: true },
+  { name: "Healing", theme: "Healing and Health" },
+  { name: "Entrepreneurship", theme: null, growOnly: true },
+  { name: "Courage", theme: null, growOnly: true }
 ];
 function growArcDays(theme){
   const days = [];
