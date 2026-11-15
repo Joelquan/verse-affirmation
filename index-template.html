@@ -2115,22 +2115,22 @@ document.getElementById("sharePicBtn").addEventListener("click", function(){
    the arc's days in order, three slots a day, clock driven like Home. */
 const GROW_KEY = "dailyWordFrameGrow";
 const GROW_AREAS = [
-  { name: "Love", theme: null, growOnly: true },
+  { name: "Love", theme: null, growOnly: true, closed: true },
   { name: "Faith", theme: "Faith", closed: true },
-  { name: "Marriage", theme: "Family and Marriage", closed: true },
-  { name: "Leadership", theme: null, growOnly: true },
-  { name: "Hope", theme: null, growOnly: true },
-  { name: "Forgiveness", theme: null, growOnly: true },
+  { name: "Marriage", theme: "Family and Marriage" },
+  { name: "Leadership", theme: null, growOnly: true, closed: true },
+  { name: "Hope", theme: null, growOnly: true, closed: true },
+  { name: "Forgiveness", theme: null, growOnly: true, closed: true },
   { name: "Prosperity", theme: "Provision and Work" },
   { name: "Wisdom", theme: "Wisdom", closed: true },
-  { name: "Focus", theme: null, growOnly: true },
-  { name: "Relationships", theme: null, growOnly: true },
-  { name: "Fear of God", theme: null, growOnly: true },
-  { name: "Love for the Lord", theme: null, growOnly: true },
-  { name: "Wife", theme: null, growOnly: true },
-  { name: "Husband", theme: null, growOnly: true },
-  { name: "Father", theme: null, growOnly: true },
-  { name: "Mother", theme: null, growOnly: true }
+  { name: "Focus", theme: null, growOnly: true, closed: true },
+  { name: "Relationships", theme: null, growOnly: true, closed: true },
+  { name: "Fear of God", theme: null, growOnly: true, closed: true },
+  { name: "Love for the Lord", theme: null, growOnly: true, closed: true },
+  { name: "Wife", theme: null, growOnly: true, closed: true },
+  { name: "Husband", theme: null, growOnly: true, closed: true },
+  { name: "Father", theme: null, growOnly: true, closed: true },
+  { name: "Mother", theme: null, growOnly: true, closed: true }
 ];
 function growArcDays(theme){
   const days = [];
