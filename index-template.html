@@ -440,9 +440,14 @@
   #savedView h2{font-size:1rem;color:var(--on-card);letter-spacing:.08em;margin-bottom:10px;font-weight:normal;}
   #savedView .empty{color:var(--label);font-size:.95rem;line-height:1.5;}
   .saved-item{
-    display:flex;justify-content:space-between;align-items:center;gap:8px;
+    display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;
     padding:11px 4px;border-top:1px solid var(--hair);
   }
+  .saved-detail{
+    flex:1 1 100%;padding:6px 2px 4px;color:var(--aff-ink);font-size:.95rem;line-height:1.55;
+  }
+  .saved-detail p{margin:0 0 8px;}
+  .saved-detail .sd-ref{color:var(--label);font-size:.85rem;letter-spacing:.04em;}
   .saved-item .open{
     background:none;border:none;font-family:inherit;text-align:left;cursor:pointer;
     color:var(--aff-ink);font-size:.98rem;flex:1;
@@ -1291,6 +1296,7 @@ function dateLabelForDay(day){
   const d = new Date(new Date().getFullYear(), 0, day);
   return names[d.getMonth()] + " " + d.getDate() + ordinalSuffix(d.getDate());
 }
+const GROW_SAVE_RE = /^grow:(Love|Faith|Marriage|Leadership|Hope|Forgiveness|Prosperity|Wisdom|Focus|Relationships|Fear of God|Love for the Lord|Wife|Husband|Father|Mother):([1-9]|[12][0-9]|30):(morning|afternoon|evening)$/;
 function getSaved(){
   try {
     const raw = JSON.parse(localStorage.getItem(SAVE_KEY)) || [];
@@ -1298,7 +1304,9 @@ function getSaved(){
     return raw.map(function(x){
       if (typeof x === "number") return x + ":afternoon";
       return x;
-    }).filter(function(x){ return /^\d+:(morning|afternoon|evening)$/.test(x); });
+    }).filter(function(x){
+      return /^\d+:(morning|afternoon|evening)$/.test(x) || GROW_SAVE_RE.test(x);
+    });
   } catch(e){ return []; }
 }
 function setSaved(list){ localStorage.setItem(SAVE_KEY, JSON.stringify(list)); }
@@ -1449,8 +1457,19 @@ function renderSaved(){
   const list = document.getElementById("savedList");
   const order = { morning: 0, afternoon: 1, evening: 2 };
   const saved = getSaved().slice().sort(function(a, b){
+    const ga = a.indexOf("grow:") === 0, gb = b.indexOf("grow:") === 0;
+    if (ga !== gb) return ga ? 1 : -1;
+    if (!ga){
+      const pa = a.split(":"), pb = b.split(":");
+      return (parseInt(pa[0], 10) - parseInt(pb[0], 10)) || (order[pa[1]] - order[pb[1]]);
+    }
     const pa = a.split(":"), pb = b.split(":");
-    return (parseInt(pa[0], 10) - parseInt(pb[0], 10)) || (order[pa[1]] - order[pb[1]]);
+    let ia = -1, ib = -1;
+    for (let i = 0; i < GROW_AREAS.length; i++){
+      if (GROW_AREAS[i].name === pa[1]) ia = i;
+      if (GROW_AREAS[i].name === pb[1]) ib = i;
+    }
+    return (ia - ib) || (parseInt(pa[2], 10) - parseInt(pb[2], 10)) || (order[pa[3]] - order[pb[3]]);
   });
   list.innerHTML = "";
   if(saved.length === 0){
@@ -1461,6 +1480,45 @@ function renderSaved(){
     return;
   }
   saved.forEach(function(key){
+    if (key.indexOf("grow:") === 0){
+      const gp = key.split(":");
+      const gArea = gp[1], gd = parseInt(gp[2], 10), gsl = gp[3];
+      const gs = (GROW[gArea] && GROW[gArea][gsl]) ? GROW[gArea][gsl][gd - 1] : null;
+      const growLabel = "Grow · " + gArea + " · Day " + gd + " · " + SLOTS[gsl].name;
+      const growRow = document.createElement("div");
+      growRow.className = "saved-item";
+      const gOpen = document.createElement("button");
+      gOpen.className = "open";
+      gOpen.type = "button";
+      gOpen.textContent = growLabel + (gs ? " · " + gs.ref : "");
+      gOpen.addEventListener("click", function(){
+        const existing = growRow.querySelector(".saved-detail");
+        if (existing){ existing.remove(); return; }
+        if (!gs) return;
+        const det = document.createElement("div");
+        det.className = "saved-detail";
+        const rv = resolveVerse(gs);
+        const pv = document.createElement("p"); pv.textContent = rv.text;
+        const pr = document.createElement("p"); pr.className = "sd-ref"; pr.textContent = rv.label;
+        const pa = document.createElement("p"); pa.textContent = gs.affirmation;
+        const pc = document.createElement("p"); pc.textContent = gs.action;
+        det.appendChild(pv); det.appendChild(pr); det.appendChild(pa); det.appendChild(pc);
+        growRow.appendChild(det);
+      });
+      const gUn = document.createElement("button");
+      gUn.className = "unsave";
+      gUn.type = "button";
+      gUn.textContent = "Unsave";
+      gUn.addEventListener("click", function(){
+        setSaved(getSaved().filter(function(x){ return x !== key; }));
+        renderSaved();
+        toast(growLabel + " removed from saved.");
+      });
+      growRow.appendChild(gOpen);
+      growRow.appendChild(gUn);
+      list.appendChild(growRow);
+      return;
+    }
     const parts = key.split(":");
     const d = parseInt(parts[0], 10), sl = parts[1];
     const e = DATA[d - 1];
@@ -2021,7 +2079,7 @@ function downloadBlob(blob, name){
 document.getElementById("sharePicBtn").addEventListener("click", function(){
   closeShareMenu();
   const isGrow = shareContext === "grow";
-  const e = isGrow ? DATA[growArcDay - 1][growSlot] : DATA[currentDay - 1][currentSlot];
+  const e = isGrow ? resolveGrowEntry(growLoad(), growSeasonDay(growLoad()), growSlot) : DATA[currentDay - 1][currentSlot];
   let canvas;
   try { canvas = buildCardCanvas(e, isGrow
     ? "Grow \u00b7 " + growLoad().area + " \u00b7 " + SLOTS[growSlot].name
@@ -2057,22 +2115,22 @@ document.getElementById("sharePicBtn").addEventListener("click", function(){
    the arc's days in order, three slots a day, clock driven like Home. */
 const GROW_KEY = "dailyWordFrameGrow";
 const GROW_AREAS = [
-  { name: "Love", theme: null },
+  { name: "Love", theme: null, growOnly: true },
   { name: "Faith", theme: "Faith", closed: true },
   { name: "Marriage", theme: "Family and Marriage", closed: true },
-  { name: "Leadership", theme: null },
-  { name: "Hope", theme: null },
-  { name: "Forgiveness", theme: null },
-  { name: "Prosperity", theme: "Provision and Work", closed: true },
+  { name: "Leadership", theme: null, growOnly: true },
+  { name: "Hope", theme: null, growOnly: true },
+  { name: "Forgiveness", theme: null, growOnly: true },
+  { name: "Prosperity", theme: "Provision and Work" },
   { name: "Wisdom", theme: "Wisdom", closed: true },
-  { name: "Focus", theme: null },
-  { name: "Relationships", theme: null },
-  { name: "Fear of God", theme: null },
-  { name: "Love for the Lord", theme: null },
-  { name: "Wife", theme: null },
-  { name: "Husband", theme: null },
-  { name: "Father", theme: null },
-  { name: "Mother", theme: null }
+  { name: "Focus", theme: null, growOnly: true },
+  { name: "Relationships", theme: null, growOnly: true },
+  { name: "Fear of God", theme: null, growOnly: true },
+  { name: "Love for the Lord", theme: null, growOnly: true },
+  { name: "Wife", theme: null, growOnly: true },
+  { name: "Husband", theme: null, growOnly: true },
+  { name: "Father", theme: null, growOnly: true },
+  { name: "Mother", theme: null, growOnly: true }
 ];
 function growArcDays(theme){
   const days = [];
@@ -2085,10 +2143,40 @@ function growArea(name){
     if (GROW_AREAS[i].name === name) return GROW_AREAS[i];
   return null;
 }
+/* The one resolver (Grow topic fix, Nov 15, 2026): every Grow entry the
+   screen shows, Share sends, or Save stores comes through here. A
+   shipped area's morning and evening entries live in GROW; its
+   afternoon keeps coming from DATA unless GROW carries an afternoon
+   entry for that season day (the arc-less areas, and Faith days 29
+   and 30). An area with no GROW section resolves exactly as before. */
+function resolveGrowEntry(g, seasonDay, slot){
+  const a = growArea(g.area);
+  const arc = a && a.theme ? growArcDays(a.theme) : null;
+  const arcDay = arc ? arc[seasonDay - 1] : seasonDay;
+  if (slot === "afternoon"){
+    if (GROW[g.area] && GROW[g.area].afternoon && GROW[g.area].afternoon[seasonDay - 1])
+      return GROW[g.area].afternoon[seasonDay - 1];
+    return DATA[arcDay - 1].afternoon;
+  }
+  if (GROW[g.area]) return GROW[g.area][slot][seasonDay - 1];
+  return DATA[arcDay - 1][slot];
+}
+function growEntryFromGrow(g, seasonDay, slot){
+  if (!GROW[g.area]) return false;
+  if (slot === "afternoon")
+    return !!(GROW[g.area].afternoon && GROW[g.area].afternoon[seasonDay - 1]);
+  return true;
+}
+function growAreaLength(name){
+  if (GROW[name]) return GROW[name].morning.length;
+  const a = growArea(name);
+  if (a && a.theme) return growArcDays(a.theme).length;
+  return 30;
+}
 function growLoad(){
   try {
     const g = JSON.parse(localStorage.getItem(GROW_KEY));
-    if (g && growArea(g.area) && growArea(g.area).theme &&
+    if (g && growArea(g.area) && (growArea(g.area).theme || GROW[g.area]) &&
         (g.length === 15 || g.length === 30) &&
         typeof g.start === "string") return g;
   } catch(e){}
@@ -2113,6 +2201,7 @@ function growSeasonDay(g){
   return Math.max(1, sd);
 }
 function growEffectiveLength(g){
+  if (GROW[g.area]) return Math.min(g.length, GROW[g.area].morning.length);
   const a = growArea(g.area);
   if (!a || !a.theme) return g.length;
   return Math.min(g.length, growArcDays(a.theme).length);
@@ -2127,7 +2216,7 @@ function growSyncPick(){
   document.getElementById("growLen30").classList.toggle("on", growPick.len === 30);
   let msg = "";
   if (growPick.area){
-    const arcLen = growArcDays(growArea(growPick.area).theme).length;
+    const arcLen = growAreaLength(growPick.area);
     if (growPick.len && growPick.len > arcLen)
       msg = "The " + growPick.area + " journey holds " + arcLen + " days, so this season runs " + arcLen + " days.";
     else if (growPick.len)
@@ -2169,10 +2258,10 @@ function renderGrow(){
   const key = g.area + "|" + sd + "|" + growSlot;
   if (key === growShownKey) return;
   growShownKey = key;
-  const arc = growArcDays(growArea(g.area).theme);
-  growArcDay = arc[sd - 1];
-  const e = DATA[growArcDay - 1];
-  const s = e[growSlot];
+  const _ga = growArea(g.area);
+  const _arc = _ga && _ga.theme ? growArcDays(_ga.theme) : null;
+  growArcDay = _arc ? (_arc[sd - 1] || sd) : sd;
+  const s = resolveGrowEntry(g, sd, growSlot);
   const S = SLOTS[growSlot];
   document.getElementById("growDateline").textContent =
     "Grow \u00b7 " + g.area + " \u00b7 Day " + sd + " of " + L;
@@ -2226,7 +2315,12 @@ function growRevealPhase(i){
   if (growRevealStep < 3)
     document.getElementById("gcover" + growRevealStep).classList.remove("waiting");
 }
-function growSaveKey(){ return growArcDay + ":" + growSlot; }
+function growSaveKey(){
+  const g = growLoad();
+  if (g && growEntryFromGrow(g, growSeasonDay(g), growSlot))
+    return "grow:" + g.area + ":" + growSeasonDay(g) + ":" + growSlot;
+  return growArcDay + ":" + growSlot;
+}
 function growUpdateSaveBtn(){
   const btn = document.getElementById("growSaveBtn");
   if (getSaved().includes(growSaveKey())){
@@ -2239,8 +2333,7 @@ function growUpdateSaveBtn(){
 }
 function growShareText(){
   const g = growLoad();
-  const e = DATA[growArcDay - 1];
-  const s = e[growSlot];
+  const s = resolveGrowEntry(g, growSeasonDay(g), growSlot);
   const rv = resolveVerse(s);
   const S = SLOTS[growSlot];
   return "My Words \u00b7 Grow \u00b7 " + g.area + " \u00b7 Day " + growSeasonDay(g) +
@@ -2254,10 +2347,11 @@ function growShareText(){
   GROW_AREAS.forEach(function(a){
     const b = document.createElement("button");
     b.type = "button";
-    b.className = "growarea" + (a.theme && !a.closed ? "" : " soon");
+    const areaOpen = !a.closed && (a.theme || (a.growOnly && GROW[a.name]));
+    b.className = "growarea" + (areaOpen ? "" : " soon");
     b.setAttribute("data-grow-area", a.name);
     b.textContent = a.name;
-    if (a.theme && !a.closed){
+    if (areaOpen){
       b.addEventListener("click", function(){
         growPick.area = a.name;
         growSyncPick();
@@ -2302,14 +2396,19 @@ function growShareText(){
   document.getElementById("growSaveBtn").addEventListener("click", function(){
     let saved = getSaved();
     const key = growSaveKey();
+    const g = growLoad();
+    const isGrowKey = key.indexOf("grow:") === 0;
+    const growLabel = g ? "Grow · " + g.area + " · Day " + growSeasonDay(g) + " · " + SLOTS[growSlot].name : "";
     if (saved.includes(key)){
       saved = saved.filter(function(x){ return x !== key; });
       setSaved(saved);
-      toast("Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " removed from saved.");
+      toast(isGrowKey ? growLabel + " removed from saved."
+        : "Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " removed from saved.");
     } else {
       saved.push(key);
       setSaved(saved);
-      toast("Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " saved.");
+      toast(isGrowKey ? "Saved to your list: " + growLabel
+        : "Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " saved.");
     }
     growUpdateSaveBtn();
     renderSaved();
