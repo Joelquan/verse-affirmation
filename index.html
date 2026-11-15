@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Words</title>
+<title>Verse Affirmation</title>
 <style>
   :root{
     --ink:#021024; --deep:#052659; --mid:#5483B3; --soft:#7DA0CA; --ice:#C1E8FF;
@@ -1093,7 +1093,7 @@ function seasonForDay(day){
   if (m >= 8 && m <= 10) return "autumn";
   return "winter";
 }
-// New scene art for My Words, built to match Joel's example poster:
+// New scene art for Verse Affirmation, built to match Joel's example poster:
 // soft gradient skies, a large celestial disc, layered hazy ridges with
 // smooth bezier crests, tiered pine silhouettes, and a winding river
 // catching the light. One landscape, dressed by time and season.
@@ -1376,7 +1376,7 @@ function render(day){
   const e = DATA[currentDay - 1];
   if(!e) return;
   document.getElementById("dateline").textContent =
-    "My Words · " + dateLabelForDay(currentDay);
+    "Verse Affirmation · " + dateLabelForDay(currentDay);
   renderSlot();
   renderSaved();
   window.scrollTo({top:0, behavior:"smooth"});
@@ -1863,7 +1863,7 @@ function shareTextForDay(){
   const s = e[currentSlot];
   const rv = resolveVerse(s);
   const S = SLOTS[currentSlot];
-  return "My Words \u00b7 Day " + currentDay + " \u00b7 " + S.name + ": " + S.title + "\n\n" +
+  return "Verse Affirmation \u00b7 Day " + currentDay + " \u00b7 " + S.name + ": " + S.title + "\n\n" +
     "VERSE\n" + rv.text + "\n" + rv.label + (rv.nkjv ? "\n" + NKJV_COPY : "") + "\n\n" +
     "AFFIRMATION\n" + s.affirmation + "\n\n" +
     "ACTION\n" + s.action;
@@ -1895,7 +1895,7 @@ document.getElementById("shareTextBtn").addEventListener("click", function(){
   closeShareMenu();
   const text = shareContext === "grow" ? growShareText() : shareTextForDay();
   if(navigator.share){
-    navigator.share({ title: "My Words", text: text }).catch(function(){});
+    navigator.share({ title: "Verse Affirmation", text: text }).catch(function(){});
   } else if(navigator.clipboard && navigator.clipboard.writeText){
     navigator.clipboard.writeText(text).then(function(){
       toast("Copied. Paste it anywhere to share.");
@@ -2055,7 +2055,7 @@ function buildCardCanvas(e, slotLabel){
   try { ctx.letterSpacing = Math.round(6 * s) + "px"; } catch(err){}
   ctx.fillStyle = pal.foot;
   ctx.textAlign = "center";
-  ctx.fillText("My Words", W / 2, H - 96);
+  ctx.fillText("Verse Affirmation", W / 2, H - 96);
   if (rv.nkjv){
     ctx.font = "20px Georgia, 'Times New Roman', serif";
     ctx.fillText(NKJV_COPY, W / 2, H - 48);
@@ -2086,8 +2086,8 @@ document.getElementById("sharePicBtn").addEventListener("click", function(){
     : SLOTS[currentSlot].name + ": " + SLOTS[currentSlot].title); }
   catch(err){ toast("Picture could not be made on this device."); return; }
   const fileName = isGrow
-    ? "mywords-grow-day-" + growSeasonDay(growLoad()) + "-" + growSlot + ".png"
-    : "mywords-day-" + currentDay + "-" + currentSlot + ".png";
+    ? "verse-affirmation-grow-day-" + growSeasonDay(growLoad()) + "-" + growSlot + ".png"
+    : "verse-affirmation-day-" + currentDay + "-" + currentSlot + ".png";
   canvas.toBlob(function(blob){
     if(!blob){ toast("Picture could not be made on this device."); return; }
     let usedShare = false;
@@ -2096,7 +2096,7 @@ document.getElementById("sharePicBtn").addEventListener("click", function(){
         const file = new File([blob], fileName, { type: "image/png" });
         if(navigator.canShare({ files: [file] })){
           usedShare = true;
-          navigator.share({ files: [file], title: "My Words" }).catch(function(err){
+          navigator.share({ files: [file], title: "Verse Affirmation" }).catch(function(err){
             if(!err || err.name !== "AbortError") downloadBlob(blob, fileName);
           });
         }
@@ -2118,7 +2118,7 @@ const GROW_AREAS = [
   { name: "Love", theme: null, growOnly: true },
   { name: "Faith", theme: "Faith" },
   { name: "Marriage", theme: "Family and Marriage" },
-  { name: "Leadership", theme: null, growOnly: true, closed: true },
+  { name: "Leadership", theme: null, growOnly: true },
   { name: "Hope", theme: null, growOnly: true },
   { name: "Forgiveness", theme: null, growOnly: true },
   { name: "Prosperity", theme: "Provision and Work" },
@@ -2336,7 +2336,7 @@ function growShareText(){
   const s = resolveGrowEntry(g, growSeasonDay(g), growSlot);
   const rv = resolveVerse(s);
   const S = SLOTS[growSlot];
-  return "My Words \u00b7 Grow \u00b7 " + g.area + " \u00b7 Day " + growSeasonDay(g) +
+  return "Verse Affirmation \u00b7 Grow \u00b7 " + g.area + " \u00b7 Day " + growSeasonDay(g) +
     " of " + growEffectiveLength(g) + " \u00b7 " + S.name + "\n\n" +
     "VERSE\n" + rv.text + "\n" + rv.label + (rv.nkjv ? "\n" + NKJV_COPY : "") + "\n\n" +
     "AFFIRMATION\n" + s.affirmation + "\n\n" +
