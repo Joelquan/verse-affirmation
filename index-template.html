@@ -813,6 +813,7 @@
 
 <script>
 const DATA = /*__DATA__*/[];
+const GROW = /*__GROW__*/{};
 const SAVE_KEY = "dailyWordFrameSaved";
 
 /* ===== Four themes: River Blue, Rotating 24, Metallic, Papyrus with Seals ===== */
@@ -2057,13 +2058,13 @@ document.getElementById("sharePicBtn").addEventListener("click", function(){
 const GROW_KEY = "dailyWordFrameGrow";
 const GROW_AREAS = [
   { name: "Love", theme: null },
-  { name: "Faith", theme: "Faith" },
-  { name: "Marriage", theme: "Family and Marriage" },
+  { name: "Faith", theme: "Faith", closed: true },
+  { name: "Marriage", theme: "Family and Marriage", closed: true },
   { name: "Leadership", theme: null },
   { name: "Hope", theme: null },
   { name: "Forgiveness", theme: null },
-  { name: "Prosperity", theme: "Provision and Work" },
-  { name: "Wisdom", theme: "Wisdom" },
+  { name: "Prosperity", theme: "Provision and Work", closed: true },
+  { name: "Wisdom", theme: "Wisdom", closed: true },
   { name: "Focus", theme: null },
   { name: "Relationships", theme: null },
   { name: "Fear of God", theme: null },
@@ -2253,10 +2254,10 @@ function growShareText(){
   GROW_AREAS.forEach(function(a){
     const b = document.createElement("button");
     b.type = "button";
-    b.className = "growarea" + (a.theme ? "" : " soon");
+    b.className = "growarea" + (a.theme && !a.closed ? "" : " soon");
     b.setAttribute("data-grow-area", a.name);
     b.textContent = a.name;
-    if (a.theme){
+    if (a.theme && !a.closed){
       b.addEventListener("click", function(){
         growPick.area = a.name;
         growSyncPick();
