@@ -293,14 +293,7 @@
   .progcap{color:var(--on-card); margin-top:14px;}
   #growShareBtn{background:linear-gradient(180deg, var(--btn-a), var(--btn-b));color:var(--btn-ink);border:1px solid var(--btn-border);}
   #growShareBtn:hover{filter:brightness(1.08);}
-  #growSaveBtn{background:linear-gradient(180deg, var(--btn2-a), var(--btn2-b));color:var(--btn2-ink);border:1px solid var(--btn2-border);}
-  #growSaveBtn:hover{filter:brightness(1.06);}
-  #growSaveBtn.saved{
-    background:linear-gradient(180deg, var(--saved-a), var(--saved-b));
-    color:var(--saved-ink);
-    border:1px solid var(--btn-border);
-    font-weight:bold;
-  }
+
   .biblebar{
     display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;
     margin:14px 0 4px;
@@ -456,14 +449,6 @@
   }
   #shareBtn{background:linear-gradient(180deg, var(--btn-a), var(--btn-b));color:var(--btn-ink);border:1px solid var(--btn-border);}
   #shareBtn:hover{filter:brightness(1.08);}
-  #saveBtn{background:linear-gradient(180deg, var(--btn2-a), var(--btn2-b));color:var(--btn2-ink);border:1px solid var(--btn2-border);}
-  #saveBtn:hover{filter:brightness(1.06);}
-  #saveBtn.saved{
-    background:linear-gradient(180deg, var(--saved-a), var(--saved-b));
-    color:var(--saved-ink);
-    border:1px solid var(--btn-border);
-    font-weight:bold;
-  }
 
   #savedView{
     display:block;margin-top:14px;
@@ -609,7 +594,6 @@
 
   <footer class="actions">
     <button id="shareBtn" type="button">Share</button>
-    <button id="saveBtn" type="button">Save</button>
   </footer>
   </div>
 
@@ -683,7 +667,6 @@
     </main>
     <footer class="actions">
       <button id="growShareBtn" type="button">Share</button>
-      <button id="growSaveBtn" type="button">Save</button>
     </footer>
     </div>
     <div id="growDone" hidden>
@@ -1417,17 +1400,6 @@ function renderSlot(){
     { morning: "#DFA53A", afternoon: "#4E97C4", evening: "#7A68B0" }[currentSlot]);
   document.getElementById("sceneArt").innerHTML = sceneSVG(currentSlot, seasonForDay(currentDay));
   resetVeil();
-  updateSaveBtn();
-}
-function updateSaveBtn(){
-  const btn = document.getElementById("saveBtn");
-  if(getSaved().includes(saveKey())){
-    btn.textContent = "Saved";
-    btn.classList.add("saved");
-  } else {
-    btn.textContent = "Save";
-    btn.classList.remove("saved");
-  }
 }
 /* Click to reveal: the three phases open in order, a classic uncovering. */
 let revealStep = 0;
@@ -1561,7 +1533,6 @@ function renderSaved(){
     un.textContent = "Unsave";
     un.addEventListener("click", function(){
       setSaved(getSaved().filter(function(x){ return x !== key; }));
-      updateSaveBtn();
       renderSaved();
       toast("Day " + d + " " + SLOTS[sl].name.toLowerCase() + " removed from saved.");
     });
@@ -1872,22 +1843,6 @@ function wireSettingsDisclosure(btnId, panelId){
 }
 wireSettingsDisclosure("themeHead", "themePanel");
 wireSettingsDisclosure("dayHead", "dayPanel");
-document.getElementById("saveBtn").addEventListener("click", function(){
-  let saved = getSaved();
-  const key = saveKey();
-  if(saved.includes(key)){
-    saved = saved.filter(function(x){ return x !== key; });
-    setSaved(saved);
-    toast("Day " + currentDay + " " + SLOTS[currentSlot].name.toLowerCase() + " removed from saved.");
-  } else {
-    saved.push(key);
-    setSaved(saved);
-    recordSave();
-    toast("Day " + currentDay + " " + SLOTS[currentSlot].name.toLowerCase() + " saved.");
-  }
-  updateSaveBtn();
-  renderSaved();
-});
 function shareTextForDay(){
   const e = DATA[currentDay - 1];
   const s = e[currentSlot];
@@ -2322,7 +2277,6 @@ function renderGrow(){
     { morning: "#DFA53A", afternoon: "#4E97C4", evening: "#7A68B0" }[growSlot]);
   document.getElementById("growSceneArt").innerHTML = sceneSVG(growSlot, seasonForDay(growArcDay));
   growResetVeil();
-  growUpdateSaveBtn();
 }
 function growResetVeil(){
   growRevealStep = 0;
@@ -2358,16 +2312,6 @@ function growSaveKey(){
   if (g && growEntryFromGrow(g, growSeasonDay(g), growSlot))
     return "grow:" + g.area + ":" + growSeasonDay(g) + ":" + growSlot;
   return growArcDay + ":" + growSlot;
-}
-function growUpdateSaveBtn(){
-  const btn = document.getElementById("growSaveBtn");
-  if (getSaved().includes(growSaveKey())){
-    btn.textContent = "Saved";
-    btn.classList.add("saved");
-  } else {
-    btn.textContent = "Save";
-    btn.classList.remove("saved");
-  }
 }
 function growShareText(){
   const g = growLoad();
@@ -2431,27 +2375,6 @@ function growShareText(){
   }
   document.getElementById("growShareBtn").addEventListener("click", function(){
     shareContext = "grow"; openShareMenu();
-  });
-  document.getElementById("growSaveBtn").addEventListener("click", function(){
-    let saved = getSaved();
-    const key = growSaveKey();
-    const g = growLoad();
-    const isGrowKey = key.indexOf("grow:") === 0;
-    const growLabel = g ? "Grow · " + g.area + " · Day " + growSeasonDay(g) + " · " + SLOTS[growSlot].name : "";
-    if (saved.includes(key)){
-      saved = saved.filter(function(x){ return x !== key; });
-      setSaved(saved);
-      toast(isGrowKey ? growLabel + " removed from saved."
-        : "Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " removed from saved.");
-    } else {
-      saved.push(key);
-      setSaved(saved);
-      recordSave();
-      toast(isGrowKey ? "Saved to your list: " + growLabel
-        : "Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " saved.");
-    }
-    growUpdateSaveBtn();
-    renderSaved();
   });
   document.getElementById("growNkjvNote").textContent = NKJV_COPY;
 })();
