@@ -306,7 +306,14 @@
   .progcap{color:var(--on-card); margin-top:14px;}
   #growShareBtn{background:linear-gradient(180deg, var(--btn-a), var(--btn-b));color:var(--btn-ink);border:1px solid var(--btn-border);}
   #growShareBtn:hover{filter:brightness(1.08);}
-
+  #growSaveBtn{background:linear-gradient(180deg, var(--btn2-a), var(--btn2-b));color:var(--btn2-ink);border:1px solid var(--btn2-border);}
+  #growSaveBtn:hover{filter:brightness(1.06);}
+  #growSaveBtn.saved{
+    background:linear-gradient(180deg, var(--saved-a), var(--saved-b));
+    color:var(--saved-ink);
+    border:1px solid var(--btn-border);
+    font-weight:bold;
+  }
   .biblebar{
     display:flex;flex-wrap:wrap;gap:8px;justify-content:center;align-items:center;
     margin:14px 0 4px;
@@ -462,6 +469,14 @@
   }
   #shareBtn{background:linear-gradient(180deg, var(--btn-a), var(--btn-b));color:var(--btn-ink);border:1px solid var(--btn-border);}
   #shareBtn:hover{filter:brightness(1.08);}
+  #saveBtn{background:linear-gradient(180deg, var(--btn2-a), var(--btn2-b));color:var(--btn2-ink);border:1px solid var(--btn2-border);}
+  #saveBtn:hover{filter:brightness(1.06);}
+  #saveBtn.saved{
+    background:linear-gradient(180deg, var(--saved-a), var(--saved-b));
+    color:var(--saved-ink);
+    border:1px solid var(--btn-border);
+    font-weight:bold;
+  }
 
   #savedView{
     display:block;margin-top:14px;
@@ -607,6 +622,7 @@
 
   <footer class="actions">
     <button id="shareBtn" type="button">Share</button>
+    <button id="saveBtn" type="button">Save</button>
   </footer>
   </div>
 
@@ -680,6 +696,7 @@
     </main>
     <footer class="actions">
       <button id="growShareBtn" type="button">Share</button>
+      <button id="growSaveBtn" type="button">Save</button>
     </footer>
     </div>
     <div id="growDone" hidden>
@@ -858,7 +875,6 @@
   <button type="button" class="navitem on" data-view="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 9.8V20h11V9.8"/><path d="M10 20v-5h4v5"/></svg><span>Home</span><span class="dot" aria-hidden="true"></span></button>
   <button type="button" class="navitem" data-view="grow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21v-7.5"/><path d="M12 13.5C12 10 14.6 7.9 18.5 7.9c0 3.9-2.3 6.1-6.5 6.1"/><path d="M12 11.5C12 8.4 9.9 6.4 6.2 6.4c0 3.7 2.1 5.8 5.8 5.8"/></svg><span>Grow</span><span class="dot" aria-hidden="true"></span></button>
   <button type="button" class="navitem" data-view="bible"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.2C10 4.7 7.6 4.2 5 4.2v13.6c2.6 0 5 .5 7 2 2-1.5 4.4-2 7-2V4.2c-2.6 0-5 .5-7 2z"/><path d="M12 6.2v13.6"/></svg><span>Bible</span><span class="dot" aria-hidden="true"></span></button>
-  <button type="button" class="navitem" data-view="saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.2h10V20l-5-3.9L7 20z"/></svg><span>Saved</span><span class="dot" aria-hidden="true"></span></button>
   <button type="button" class="navitem" data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 3.6v2.5M12 17.9v2.5M3.6 12h2.5M17.9 12h2.5M6.1 6.1l1.7 1.7M16.2 16.2l1.7 1.7M17.9 6.1l-1.7 1.7M7.8 16.2l-1.7 1.7"/></svg><span>Settings</span><span class="dot" aria-hidden="true"></span></button>
   <button type="button" class="navitem" data-view="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg><span>Profile</span><span class="dot" aria-hidden="true"></span></button>
 </nav>
@@ -1413,6 +1429,17 @@ function renderSlot(){
     { morning: "#DFA53A", afternoon: "#4E97C4", evening: "#7A68B0" }[currentSlot]);
   document.getElementById("sceneArt").innerHTML = sceneSVG(currentSlot, seasonForDay(currentDay));
   resetVeil();
+  updateSaveBtn();
+}
+function updateSaveBtn(){
+  const btn = document.getElementById("saveBtn");
+  if(getSaved().includes(saveKey())){
+    btn.textContent = "Saved";
+    btn.classList.add("saved");
+  } else {
+    btn.textContent = "Save";
+    btn.classList.remove("saved");
+  }
 }
 /* Click to reveal: the three phases open in order, a classic uncovering. */
 let revealStep = 0;
@@ -1546,6 +1573,7 @@ function renderSaved(){
     un.textContent = "Unsave";
     un.addEventListener("click", function(){
       setSaved(getSaved().filter(function(x){ return x !== key; }));
+      updateSaveBtn();
       renderSaved();
       toast("Day " + d + " " + SLOTS[sl].name.toLowerCase() + " removed from saved.");
     });
@@ -1856,6 +1884,22 @@ function wireSettingsDisclosure(btnId, panelId){
 }
 wireSettingsDisclosure("themeHead", "themePanel");
 wireSettingsDisclosure("dayHead", "dayPanel");
+document.getElementById("saveBtn").addEventListener("click", function(){
+  let saved = getSaved();
+  const key = saveKey();
+  if(saved.includes(key)){
+    saved = saved.filter(function(x){ return x !== key; });
+    setSaved(saved);
+    toast("Day " + currentDay + " " + SLOTS[currentSlot].name.toLowerCase() + " removed from saved.");
+  } else {
+    saved.push(key);
+    setSaved(saved);
+    recordSave();
+    toast("Day " + currentDay + " " + SLOTS[currentSlot].name.toLowerCase() + " saved.");
+  }
+  updateSaveBtn();
+  renderSaved();
+});
 function shareTextForDay(){
   const e = DATA[currentDay - 1];
   const s = e[currentSlot];
@@ -2290,6 +2334,7 @@ function renderGrow(){
     { morning: "#DFA53A", afternoon: "#4E97C4", evening: "#7A68B0" }[growSlot]);
   document.getElementById("growSceneArt").innerHTML = sceneSVG(growSlot, seasonForDay(growArcDay));
   growResetVeil();
+  growUpdateSaveBtn();
 }
 function growResetVeil(){
   growRevealStep = 0;
@@ -2325,6 +2370,16 @@ function growSaveKey(){
   if (g && growEntryFromGrow(g, growSeasonDay(g), growSlot))
     return "grow:" + g.area + ":" + growSeasonDay(g) + ":" + growSlot;
   return growArcDay + ":" + growSlot;
+}
+function growUpdateSaveBtn(){
+  const btn = document.getElementById("growSaveBtn");
+  if (getSaved().includes(growSaveKey())){
+    btn.textContent = "Saved";
+    btn.classList.add("saved");
+  } else {
+    btn.textContent = "Save";
+    btn.classList.remove("saved");
+  }
 }
 function growShareText(){
   const g = growLoad();
@@ -2388,6 +2443,27 @@ function growShareText(){
   }
   document.getElementById("growShareBtn").addEventListener("click", function(){
     shareContext = "grow"; openShareMenu();
+  });
+  document.getElementById("growSaveBtn").addEventListener("click", function(){
+    let saved = getSaved();
+    const key = growSaveKey();
+    const g = growLoad();
+    const isGrowKey = key.indexOf("grow:") === 0;
+    const growLabel = g ? "Grow · " + g.area + " · Day " + growSeasonDay(g) + " · " + SLOTS[growSlot].name : "";
+    if (saved.includes(key)){
+      saved = saved.filter(function(x){ return x !== key; });
+      setSaved(saved);
+      toast(isGrowKey ? growLabel + " removed from saved."
+        : "Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " removed from saved.");
+    } else {
+      saved.push(key);
+      setSaved(saved);
+      recordSave();
+      toast(isGrowKey ? "Saved to your list: " + growLabel
+        : "Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " saved.");
+    }
+    growUpdateSaveBtn();
+    renderSaved();
   });
   document.getElementById("growNkjvNote").textContent = NKJV_COPY;
 })();
