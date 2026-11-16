@@ -17,7 +17,7 @@
     --btn-a:#5483B3; --btn-b:#052659; --btn-ink:#FFFFFF; --btn-border:rgba(193,232,255,.40);
     --btn2-a:#052659; --btn2-b:#021024; --btn2-ink:#C1E8FF; --btn2-border:rgba(125,160,202,.55);
     --saved-a:#7DA0CA; --saved-b:#5483B3; --saved-ink:#021024;
-    --nav-bg-a:rgba(84,131,179,.30); --nav-bg-b:rgba(5,38,89,.70); --nav-ink:#C1E8FF;
+    --nav-bg-a:rgba(84,131,179,.30); --nav-bg-b:rgba(5,38,89,.70); --nav-solid-a:#5483B3; --nav-solid-b:#052659; --nav-ink:#C1E8FF;
     --nav-border:rgba(125,160,202,.45); --nav-hover-a:rgba(125,160,202,.45); --nav-hover-b:rgba(5,38,89,.75);
     --head-ink:#C1E8FF; --title-ink:#FFFFFF; --title-glow:rgba(125,160,202,.5); --head-rule:rgba(125,160,202,.9);
     --label:#7DA0CA; --page-label:#7DA0CA; --label-rule:rgba(84,131,179,.75); --ref-ink:#7DA0CA;
@@ -194,14 +194,14 @@
     position:fixed;left:0;right:0;bottom:0;z-index:40;
     max-width:580px;margin:0 auto;
     display:flex;
-    background:linear-gradient(180deg, var(--nav-bg-a), var(--nav-bg-b));
+    background:linear-gradient(180deg, var(--nav-solid-a), var(--nav-solid-b));
     border-top:1px solid var(--nav-border);
     box-shadow:0 -8px 26px var(--shadow2);
     padding:6px 6px calc(6px + env(safe-area-inset-bottom));
   }
   .navitem{
     flex:1;background:none;border:none;cursor:pointer;font-family:inherit;
-    display:flex;flex-direction:column;align-items:center;gap:3px;
+    display:flex;flex-direction:column;align-items:center;gap:3px;white-space:nowrap;
     padding:7px 2px 5px;color:var(--label);
     font-size:.7rem;letter-spacing:.14em;text-transform:uppercase;
   }
@@ -254,6 +254,43 @@
     box-shadow:0 10px 24px var(--shadow2), inset 0 1px 0 var(--hl);
   }
   .growstart[disabled]{opacity:.45;cursor:default;}
+  .recordfail{color:var(--label); font-size:.92rem; line-height:1.6; text-align:center;
+    margin:12px auto 4px; max-width:520px;}
+  #view-profile .settingslabel, #view-analytics .settingslabel{text-align:left;}
+  .formline{color:var(--on-card); line-height:1.6; margin-top:12px;}
+  .errline{color:var(--label); font-weight:bold;}
+  .capline{color:var(--label); font-size:.85rem; margin-top:6px; text-align:center;}
+  .textinput{width:100%; font-family:inherit; font-size:1rem; padding:12px 14px; border-radius:10px;
+    border:1px solid var(--nav-border); background:var(--field-bg); color:var(--on-card);}
+  .profilehead{text-align:center; margin-top:6px;}
+  .profilepic{width:88px; height:88px; border-radius:50%; object-fit:cover; display:block;
+    margin:0 auto; border:1px solid var(--card-border); background:var(--field-bg);}
+  .profilepicview-name{color:var(--on-card); font-size:1.2rem; margin-top:12px;}
+  .btnsecond{width:100%; margin-top:12px; font-family:inherit; font-size:1rem; padding:13px;
+    border-radius:12px; cursor:pointer; background:linear-gradient(180deg, var(--btn2-a), var(--btn2-b));
+    color:var(--btn2-ink); border:1px solid var(--btn2-border);}
+  .dangerrow{margin-top:18px;}
+  .confirmbox{margin-top:12px;}
+  .confirmrow{display:flex; gap:10px; margin-top:12px;}
+  .confirmrow .growstart, .confirmrow .btnsecond{margin-top:0;}
+  .anahead{display:flex; align-items:center; gap:14px; margin-top:6px;}
+  .anapic{width:64px; height:64px; margin:0; flex:none;}
+  .ananame{color:var(--on-card); font-size:1.15rem;}
+  .anatitle{color:var(--on-card); line-height:1.6; margin-top:12px; outline:none;}
+  .backlink{background:none; border:none; font-family:inherit; font-size:.95rem; color:var(--link);
+    cursor:pointer; padding:0; margin-top:10px; text-decoration:underline;}
+  .totalline{color:var(--on-card); line-height:1.7;}
+  .historyrow{color:var(--on-card); line-height:1.65; margin-top:12px;}
+  .emptyline{color:var(--label); font-size:.95rem; line-height:1.55; margin-top:12px;}
+  .chartblock svg{width:100%; height:auto; display:block;}
+  .piewrap{max-width:300px; margin:0 auto;}
+  .legendline{color:var(--on-card); line-height:1.7; margin-top:6px;}
+  .swatch{display:inline-block; width:10px; height:10px; margin-right:8px; vertical-align:middle;}
+  .progtrackwrap{position:relative; height:10px; margin-top:8px;}
+  .progtrack{position:absolute; left:0; right:0; top:0; height:10px; border-radius:999px;
+    background:var(--mid); opacity:.25;}
+  .progfill{position:absolute; left:0; top:0; height:10px; border-radius:999px; background:var(--mid);}
+  .progcap{color:var(--on-card); margin-top:14px;}
   #growShareBtn{background:linear-gradient(180deg, var(--btn-a), var(--btn-b));color:var(--btn-ink);border:1px solid var(--btn-border);}
   #growShareBtn:hover{filter:brightness(1.08);}
   #growSaveBtn{background:linear-gradient(180deg, var(--btn2-a), var(--btn2-b));color:var(--btn2-ink);border:1px solid var(--btn2-border);}
@@ -518,6 +555,7 @@
 <body>
 <div class="frame">
   <div class="view" id="view-home">
+  <p class="recordfail" id="homeRecordFail" hidden>Your record could not be saved on this device, so new moments are not being recorded. Do not clear this app's browser data, because that would erase your record. Free some space elsewhere on your phone, and it will record again when you return. A moment you finish while this line is showing counts only if you reveal it again once the line is gone and its covers have closed again: its covers close when the day or the time of day changes.</p>
   <header>
     <div class="brandline" id="dateline"></div>
     <div class="scene" id="sceneBox" data-time="morning">
@@ -576,6 +614,7 @@
   </div>
 
   <div class="view" id="view-grow" hidden>
+  <p class="recordfail" id="growRecordFail" hidden>Your record could not be saved on this device, so new moments are not being recorded. Do not clear this app's browser data, because that would erase your record. Free some space elsewhere on your phone, and it will record again when you return. A moment you finish while this line is showing counts only if you reveal it again once the line is gone and its covers have closed again: its covers close when the day or the time of day changes.</p>
     <div id="growOnboard">
       <div class="viewhead">Grow</div>
       <p class="grownote">Choose one area to grow in, and one season. Inside Grow you see only that journey, three times a day, until the season is complete.</p>
@@ -589,6 +628,7 @@
         </div>
         <p class="grownote" id="growPickNote"></p>
         <button type="button" class="growstart" id="growStart" disabled>Begin the season</button>
+        <p class="grownote">Seasons and moments on this device are recorded for the journey analytics. An area may hold fewer days than the length you choose; the true length is shown when your season begins.</p>
       </div>
     </div>
     <div id="growSeason" hidden>
@@ -657,6 +697,7 @@
   </div>
 
   <div class="view" id="view-bible" hidden>
+  <p class="recordfail" id="bibleRecordFail" hidden>Your record could not be saved on this device, so new moments are not being recorded. Do not clear this app's browser data, because that would erase your record. Free some space elsewhere on your phone, and it will record again when you return. A moment you finish while this line is showing counts only if you reveal it again once the line is gone and its covers have closed again: its covers close when the day or the time of day changes.</p>
     <div class="viewhead">Bible</div>
     <div class="verbar" role="group" aria-label="Bible version">
       <button type="button" class="verbtn" data-bible-version="kjv">KJV</button>
@@ -676,6 +717,7 @@
   </div>
 
   <div class="view" id="view-saved" hidden>
+  <p class="recordfail" id="savedRecordFail" hidden>Your record could not be saved on this device, so new moments are not being recorded. Do not clear this app's browser data, because that would erase your record. Free some space elsewhere on your phone, and it will record again when you return. A moment you finish while this line is showing counts only if you reveal it again once the line is gone and its covers have closed again: its covers close when the day or the time of day changes.</p>
   <div id="savedView">
     <h2>Saved Days</h2>
     <div id="savedList"></div>
@@ -683,6 +725,7 @@
   </div>
 
   <div class="view" id="view-settings" hidden>
+  <p class="recordfail" id="settingsRecordFail" hidden>Your record could not be saved on this device, so new moments are not being recorded. Do not clear this app's browser data, because that would erase your record. Free some space elsewhere on your phone, and it will record again when you return. A moment you finish while this line is showing counts only if you reveal it again once the line is gone and its covers have closed again: its covers close when the day or the time of day changes.</p>
     <div class="viewhead">Settings</div>
     <div class="settingsbox">
 <button type="button" class="settingshead" id="themeHead" aria-expanded="false" aria-controls="themePanel">Theme <span class="chev" aria-hidden="true">+</span></button>
@@ -701,6 +744,119 @@
       </div>
     </div>
   </div>
+
+<div class="view" id="view-profile" hidden>
+  <p class="recordfail" id="profileRecordFail" hidden>Your record could not be saved on this device, so new moments are not being recorded. Do not clear this app's browser data, because that would erase your record. Free some space elsewhere on your phone, and it will record again when you return. A moment you finish while this line is showing counts only if you reveal it again once the line is gone and its covers have closed again: its covers close when the day or the time of day changes.</p>
+  <div class="viewhead" id="profileTitle" tabindex="-1">Your profile</div>
+  <div class="settingsbox">
+    <div class="profilehead" id="profileSavedBlock" hidden>
+      <img class="profilepic" id="profilePicView" alt="Your profile picture">
+      <div class="profilepicview-name" id="profileNameView"></div>
+      <button type="button" class="growstart" id="profileAnalyticsLink">See your journey analytics</button>
+      <button type="button" class="btnsecond" id="profileEdit">Edit profile</button>
+      <div class="dangerrow" id="profileDeleteRow">
+        <button type="button" class="btnsecond" id="profileDelete">Delete profile</button>
+        <p class="capline" id="profileDeleteCap">Removes your name and picture.</p>
+        <div class="confirmbox" id="profileDeleteBox" hidden>
+          <p class="formline">Delete your profile? This removes your name and picture from this device. Your journey record stays on this device, and setting up a profile again will show it again.</p>
+          <div class="confirmrow">
+            <button type="button" class="growstart" id="profileDeleteConfirm">Confirm</button>
+            <button type="button" class="btnsecond" id="profileDeleteCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+      <div class="dangerrow" id="profileClearRow">
+        <button type="button" class="btnsecond" id="profileClear">Clear my record</button>
+        <p class="capline" id="profileClearCap">Removes your journeys and activity counts.</p>
+        <div class="confirmbox" id="profileClearBox" hidden>
+          <p class="formline">Clear your record? This removes your journeys and activity counts from this device. It cannot be undone. Your name and picture stay.</p>
+          <p class="formline" id="profileClearMid" hidden>A season in progress keeps running; when you next open Grow, what remains of it is recorded from today, as a journey adopted today, and its earlier days stay unrecorded.</p>
+          <div class="confirmrow">
+            <button type="button" class="growstart" id="profileClearConfirm">Confirm</button>
+            <button type="button" class="btnsecond" id="profileClearCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="profileForm">
+      <p class="formline" id="profileGateLine" hidden>Set up your profile first. Your analytics open as soon as your profile is saved.</p>
+      <p class="formline" id="profileUnreadable" hidden>Your saved profile could not be read, so it is shown as not set up. Save a profile to replace it. Your journey record is untouched.</p>
+      <p class="formline">Your profile is your full name and your picture. Both are required. One profile stands at the head of the journey record kept on this browser, the record of everyone who grows here. If others grow on this same browser, their journeys join the same record.</p>
+      <p class="formline">Choose a photo of yourself that is stored on this phone. A picture saved somewhere else, like a cloud photo, may not load; if your picture will not load, choose a photo stored on the phone itself.</p>
+      <div class="settingslabel">Full name</div>
+      <input type="text" class="textinput" id="profileName" maxlength="60" autocomplete="name">
+      <div class="settingslabel">Your picture</div>
+      <button type="button" class="btnsecond" id="profilePicBtn">Choose your picture</button>
+      <input type="file" id="profilePicInput" accept="image/*" hidden>
+      <img class="profilepic" id="profilePreview" alt="Your chosen picture" hidden style="margin-top:14px;">
+      <p class="formline errline" id="profilePicError" hidden>That picture could not be read. Choose a photo stored on this phone; a picture saved only in the cloud may not load.</p>
+      <p class="formline errline" id="profileTooLarge" hidden>That picture is too large to keep on this device, even made small. Choose another picture.</p>
+      <button type="button" class="growstart" id="profileSave" disabled>Save profile</button>
+      <p class="grownote" id="profileHint">Add your full name and your picture to save your profile.</p>
+      <p class="formline" id="profileStorageError" hidden>Your profile could not be saved on this device. Nothing was saved. Free some space on your phone, or remove downloads you no longer need, then tap Save profile again.</p>
+      <p class="formline">When your profile is saved, you can see your journey analytics from here.</p>
+      <button type="button" class="btnsecond" id="profileEditCancel" hidden>Cancel</button>
+      <div class="dangerrow" id="profileSetupClearRow" hidden>
+        <button type="button" class="btnsecond" id="profileSetupClear">Clear my record</button>
+        <p class="capline">Removes your journeys and activity counts.</p>
+        <div class="confirmbox" id="profileSetupClearBox" hidden>
+          <p class="formline">Clear your record? This removes your journeys and activity counts from this device. It cannot be undone. Your name and picture stay.</p>
+          <p class="formline" id="profileSetupClearMid" hidden>A season in progress keeps running; when you next open Grow, what remains of it is recorded from today, as a journey adopted today, and its earlier days stay unrecorded.</p>
+          <div class="confirmrow">
+            <button type="button" class="growstart" id="profileSetupClearConfirm">Confirm</button>
+            <button type="button" class="btnsecond" id="profileSetupClearCancel">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="view" id="view-analytics" hidden>
+  <p class="recordfail" id="analyticsRecordFail" hidden>Your record could not be saved on this device, so new moments are not being recorded. Do not clear this app's browser data, because that would erase your record. Free some space elsewhere on your phone, and it will record again when you return. A moment you finish while this line is showing counts only if you reveal it again once the line is gone and its covers have closed again: its covers close when the day or the time of day changes.</p>
+  <button type="button" class="backlink" id="analyticsBack">Back to your profile</button>
+  <div class="settingsbox">
+    <div class="anahead">
+      <img class="profilepic anapic" id="analyticsPic" alt="Your profile picture">
+      <div class="ananame" id="analyticsName"></div>
+    </div>
+    <p class="anatitle" id="analyticsTitle" tabindex="-1">Your journey in Verse Affirmation, as recorded on this device</p>
+    <p class="formline">One profile holds the record of everyone who grows on this browser.</p>
+  </div>
+  <div class="settingsbox">
+    <p class="formline" style="margin-top:0;">A moment counts when you have opened all three of its parts, the Verse, the Affirmation, and the Action. A moment you leave partway is not counted. If you open a saved moment again, it counts on the day you complete it, in the time of day it was saved for.</p>
+    <p class="formline">Grow marks a season finished when its days have run out on the calendar. A season is counted completed only if you used every day of it; otherwise it stands as ended, with the days you did use.</p>
+  </div>
+  <div class="settingsbox">
+    <div class="settingslabel">Your totals</div>
+    <div id="analyticsTotals"></div>
+    <p class="formline">Saves made counts every save, on Home and in Grow together. Saving the same day or moment again, after unsaving it, counts again.</p>
+    <p class="formline">This record lives on this device, in this browser. A record made at the other Verse Affirmation link stays at that link; each link keeps its own.</p>
+  </div>
+  <div class="settingsbox" id="journeyNow" hidden></div>
+  <div class="settingsbox">
+    <div class="settingslabel">Your journeys</div>
+    <div id="journeyHistory"></div>
+  </div>
+  <div class="settingsbox chartblock" id="chartPieBlock">
+    <div class="settingslabel">Your moments by time of day (Home and Grow)</div>
+    <div id="chartPieHolder"></div>
+    <div id="chartPieLegend"></div>
+  </div>
+  <div class="settingsbox chartblock" id="chartBarsBlock">
+    <div class="settingslabel">Moments in each Grow area</div>
+    <div id="chartBarsHolder"></div>
+  </div>
+  <div class="settingsbox chartblock" id="chartLineBlock">
+    <div class="settingslabel">Your last 30 days</div>
+    <div id="chartLineHolder"></div>
+    <div id="chartLineLegend"></div>
+  </div>
+  <div class="settingsbox">
+    <div class="settingslabel">Your moments on Home (the General year)</div>
+    <div id="generalBlock"></div>
+  </div>
+  <div class="settingsbox" id="analyticsClosing"></div>
 </div>
 <nav class="bottomnav" aria-label="Main">
   <button type="button" class="navitem on" data-view="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11.5 12 4l8 7.5"/><path d="M6.5 9.8V20h11V9.8"/><path d="M10 20v-5h4v5"/></svg><span>Home</span><span class="dot" aria-hidden="true"></span></button>
@@ -708,6 +864,7 @@
   <button type="button" class="navitem" data-view="bible"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 6.2C10 4.7 7.6 4.2 5 4.2v13.6c2.6 0 5 .5 7 2 2-1.5 4.4-2 7-2V4.2c-2.6 0-5 .5-7 2z"/><path d="M12 6.2v13.6"/></svg><span>Bible</span><span class="dot" aria-hidden="true"></span></button>
   <button type="button" class="navitem" data-view="saved"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 4.2h10V20l-5-3.9L7 20z"/></svg><span>Saved</span><span class="dot" aria-hidden="true"></span></button>
   <button type="button" class="navitem" data-view="settings"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3.1"/><path d="M12 3.6v2.5M12 17.9v2.5M3.6 12h2.5M17.9 12h2.5M6.1 6.1l1.7 1.7M16.2 16.2l1.7 1.7M17.9 6.1l-1.7 1.7M7.8 16.2l-1.7 1.7"/></svg><span>Settings</span><span class="dot" aria-hidden="true"></span></button>
+  <button type="button" class="navitem" data-view="profile"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.6"/><path d="M5 20c1.2-3.4 3.8-5 7-5s5.8 1.6 7 5"/></svg><span>Profile</span><span class="dot" aria-hidden="true"></span></button>
 </nav>
 <div class="share-menu" id="shareMenu">
   <div class="share-box">
@@ -791,7 +948,7 @@ const RIVER_CSS = {
   "--btn-a": "#5483B3", "--btn-b": "#052659", "--btn-ink": "#FFFFFF", "--btn-border": "rgba(193,232,255,.40)",
   "--btn2-a": "#052659", "--btn2-b": "#021024", "--btn2-ink": "#C1E8FF", "--btn2-border": "rgba(125,160,202,.55)",
   "--saved-a": "#7DA0CA", "--saved-b": "#5483B3", "--saved-ink": "#021024",
-  "--nav-bg-a": "rgba(84,131,179,.30)", "--nav-bg-b": "rgba(5,38,89,.70)", "--nav-ink": "#C1E8FF",
+  "--nav-bg-a": "rgba(84,131,179,.30)", "--nav-bg-b": "rgba(5,38,89,.70)", "--nav-solid-a": "#5483B3", "--nav-solid-b": "#052659", "--nav-ink": "#C1E8FF",
   "--nav-border": "rgba(125,160,202,.45)", "--nav-hover-a": "rgba(125,160,202,.45)", "--nav-hover-b": "rgba(5,38,89,.75)",
   "--head-ink": "#C1E8FF", "--title-ink": "#FFFFFF", "--title-glow": "rgba(125,160,202,.5)", "--head-rule": "rgba(125,160,202,.9)",
   "--label": "#7DA0CA", "--page-label": "#7DA0CA", "--label-rule": "rgba(84,131,179,.75)", "--ref-ink": "#7DA0CA",
@@ -813,7 +970,7 @@ const PAPYRUS_CSS = {
   "--btn-a": "#8A3324", "--btn-b": "#6E2418", "--btn-ink": "#F7EBCE", "--btn-border": "rgba(247,235,206,.5)",
   "--btn2-a": "#E9D6A2", "--btn2-b": "#D9BE82", "--btn2-ink": "#43331C", "--btn2-border": "rgba(122,90,40,.6)",
   "--saved-a": "#8A3324", "--saved-b": "#6E2418", "--saved-ink": "#F7EBCE",
-  "--nav-bg-a": "rgba(255,248,220,.55)", "--nav-bg-b": "rgba(210,180,110,.6)", "--nav-ink": "#43331C",
+  "--nav-bg-a": "rgba(255,248,220,.55)", "--nav-bg-b": "rgba(210,180,110,.6)", "--nav-solid-a": "#FFF8DC", "--nav-solid-b": "#D2B46E", "--nav-ink": "#43331C",
   "--nav-border": "rgba(122,90,40,.5)", "--nav-hover-a": "rgba(255,250,230,.8)", "--nav-hover-b": "rgba(216,186,116,.7)",
   "--head-ink": "#43331C", "--title-ink": "#3A2A16", "--title-glow": "rgba(122,74,26,.22)", "--head-rule": "rgba(122,74,26,.65)",
   "--label": "#7E241C", "--page-label": "#7E241C", "--label-rule": "rgba(126,36,28,.5)", "--ref-ink": "#7E241C",
@@ -835,7 +992,7 @@ function rotCss(s){
     "--btn-a": ac, "--btn-b": cD, "--btn-ink": "#FFFFFF", "--btn-border": hx(ic, .4),
     "--btn2-a": cD, "--btn2-b": bgD, "--btn2-ink": ic, "--btn2-border": hx(so, .55),
     "--saved-a": so, "--saved-b": ac, "--saved-ink": bgD,
-    "--nav-bg-a": hx(ac, .30), "--nav-bg-b": hx(cD, .72), "--nav-ink": ic,
+    "--nav-bg-a": hx(ac, .30), "--nav-bg-b": hx(cD, .72), "--nav-solid-a": hx(ac, 1), "--nav-solid-b": hx(cD, 1), "--nav-ink": ic,
     "--nav-border": hx(so, .45), "--nav-hover-a": hx(so, .42), "--nav-hover-b": hx(cD, .78),
     "--head-ink": ic, "--title-ink": "#FFFFFF", "--title-glow": hx(so, .5), "--head-rule": hx(so, .9),
     "--label": so, "--page-label": so, "--label-rule": hx(ac, .75), "--ref-ink": so,
@@ -858,7 +1015,7 @@ function metalCss(m){
     "--btn-a": st[2], "--btn-b": st[1], "--btn-ink": m.ink, "--btn-border": hx(m.ink, .4),
     "--btn2-a": st[3], "--btn2-b": st[0], "--btn2-ink": m.ink, "--btn2-border": hx(m.ink, .4),
     "--saved-a": m.ink, "--saved-b": m.ink, "--saved-ink": st[2],
-    "--nav-bg-a": hx(st[2], .30), "--nav-bg-b": hx(m.bg[1], .75), "--nav-ink": st[2],
+    "--nav-bg-a": hx(st[2], .30), "--nav-bg-b": hx(m.bg[1], .75), "--nav-solid-a": hx(st[2], 1), "--nav-solid-b": hx(m.bg[1], 1), "--nav-ink": st[2],
     "--nav-border": hx(st[2], .5), "--nav-hover-a": hx(st[2], .45), "--nav-hover-b": hx(m.bg[1], .8),
     "--head-ink": st[2], "--title-ink": st[2], "--title-glow": hx(st[2], .45), "--head-rule": hx(st[2], .8),
     "--label": m.soft, "--page-label": st[2], "--label-rule": hx(m.ink, .4), "--ref-ink": m.soft,
@@ -1305,6 +1462,7 @@ function revealPhase(i){
   fitHome();
   if (revealStep < 3)
     document.getElementById("cover" + revealStep).classList.remove("waiting");
+  if (i === 2) recordMoment("home", currentDay, currentSlot);
 }
 window.addEventListener("resize", fitHome);
 (function wireTimeControls(){
@@ -1416,16 +1574,26 @@ function renderSaved(){
    a time, the app opens on Home, and the nav remembers nothing. */
 let currentView = "home";
 function showView(name){
+  if (name === "analytics" && !profileLoad()){
+    profileGateNote = true;
+    gateReturn = true;
+    showView("profile");
+    document.getElementById("profileTitle").focus();
+    return;
+  }
   currentView = name;
-  const views = ["home", "grow", "bible", "saved", "settings"];
+  const views = ["home", "grow", "bible", "saved", "settings", "profile", "analytics"];
   for (let i = 0; i < views.length; i++)
     document.getElementById("view-" + views[i]).hidden = views[i] !== name;
+  const dotView = name === "analytics" ? "profile" : name;
   const items = document.querySelectorAll(".navitem");
   for (let i = 0; i < items.length; i++)
-    items[i].classList.toggle("on", items[i].getAttribute("data-view") === name);
+    items[i].classList.toggle("on", items[i].getAttribute("data-view") === dotView);
   if (name === "grow") renderGrow();
   if (name === "bible") ensureBible();
   if (name === "saved") renderSaved();
+  if (name === "profile") renderProfile();
+  if (name === "analytics") renderAnalytics();
   window.scrollTo(0, 0);
 }
 (function wireBottomNav(){
@@ -1714,6 +1882,7 @@ document.getElementById("saveBtn").addEventListener("click", function(){
   } else {
     saved.push(key);
     setSaved(saved);
+    recordSave();
     toast("Day " + currentDay + " " + SLOTS[currentSlot].name.toLowerCase() + " saved.");
   }
   updateSaveBtn();
@@ -1753,6 +1922,7 @@ document.getElementById("shareMenu").addEventListener("click", function(ev){
   if(ev.target === this) closeShareMenu();
 });
 document.getElementById("shareTextBtn").addEventListener("click", function(){
+  recordShare();
   closeShareMenu();
   const text = shareContext === "grow" ? growShareText() : shareTextForDay();
   if(navigator.share){
@@ -1938,6 +2108,7 @@ function downloadBlob(blob, name){
   toast("Picture saved. Share it from your downloads.");
 }
 document.getElementById("sharePicBtn").addEventListener("click", function(){
+  recordShare();
   closeShareMenu();
   const isGrow = shareContext === "grow";
   const e = isGrow ? resolveGrowEntry(growLoad(), growSeasonDay(growLoad()), growSlot) : DATA[currentDay - 1][currentSlot];
@@ -2099,6 +2270,7 @@ let growArcDay = null;
 let growShownKey = "";
 let growRevealStep = 0;
 function renderGrow(){
+  journeySync();
   const g = growLoad();
   const onboard = document.getElementById("growOnboard");
   const season = document.getElementById("growSeason");
@@ -2179,6 +2351,7 @@ function growRevealPhase(i){
   growRevealStep++;
   if (growRevealStep < 3)
     document.getElementById("gcover" + growRevealStep).classList.remove("waiting");
+  if (i === 2) recordMoment("grow", growSeasonDay(growLoad()), growSlot);
 }
 function growSaveKey(){
   const g = growLoad();
@@ -2239,6 +2412,7 @@ function growShareText(){
   document.getElementById("growStart").addEventListener("click", function(){
     if (!growPick.area || !growPick.len) return;
     growSaveState({ area: growPick.area, length: growPick.len, start: growLocalDateStr(new Date()) });
+    journeyBegin(growLoad(), false);
     growShownKey = "";
     renderGrow();
     toast("Your " + growPick.area + " season has begun. Day 1 of " + growEffectiveLength(growLoad()) + ".");
@@ -2272,6 +2446,7 @@ function growShareText(){
     } else {
       saved.push(key);
       setSaved(saved);
+      recordSave();
       toast(isGrowKey ? "Saved to your list: " + growLabel
         : "Day " + growArcDay + " " + SLOTS[growSlot].name.toLowerCase() + " saved.");
     }
@@ -2280,6 +2455,792 @@ function growShareText(){
   });
   document.getElementById("growNkjvNote").textContent = NKJV_COPY;
 })();
+
+
+/* ===== Profile and Journey Analytics (profile-analytics-plan.md) ===== */
+const PROFILE_KEY = "dailyWordFrameProfile";
+const RECORD_KEY = "dailyWordFrameRecord";
+let recordSaveFailed = false;
+let profileGateNote = false;
+let gateReturn = false;
+let profileEditing = false;
+let profilePicDraft = null;
+
+function el(id){ return document.getElementById(id); }
+
+function profileLoad(){
+  try {
+    const p = JSON.parse(localStorage.getItem(PROFILE_KEY));
+    if (p && typeof p.name === "string" && p.name.trim() !== "" &&
+        typeof p.pic === "string" && p.pic.indexOf("data:image/") === 0)
+      return { name: p.name, pic: p.pic };
+  } catch(e){}
+  return null;
+}
+function profileStore(p){
+  try { localStorage.setItem(PROFILE_KEY, JSON.stringify(p)); return true; }
+  catch(e){ return false; }
+}
+function profileKeyPresent(){
+  try { return localStorage.getItem(PROFILE_KEY) !== null; } catch(e){ return false; }
+}
+function recordKeyPresent(){
+  try { return localStorage.getItem(RECORD_KEY) !== null; } catch(e){ return false; }
+}
+
+function validDateStr(s){
+  if (typeof s !== "string") return false;
+  const p = s.split("-");
+  if (p.length !== 3) return false;
+  const y = +p[0], m = +p[1], d = +p[2];
+  if (!y || m < 1 || m > 12 || d < 1 || d > 31) return false;
+  const dt = new Date(y, m - 1, d);
+  return dt.getFullYear() === y && dt.getMonth() === m - 1 && dt.getDate() === d;
+}
+function displayDate(iso){
+  const MONTHS = ["January", "February", "March", "April", "May", "June", "July",
+    "August", "September", "October", "November", "December"];
+  const p = String(iso).split("-");
+  return MONTHS[+p[1] - 1] + " " + (+p[2]) + ", " + (+p[0]);
+}
+function addDaysIso(iso, n){
+  const p = iso.split("-");
+  const dt = new Date(+p[0], +p[1] - 1, +p[2]);
+  dt.setDate(dt.getDate() + n);
+  return growLocalDateStr(dt);
+}
+function isCount(x){ return Number.isInteger(x) && x >= 0; }
+function zeroTotals(){
+  return { home: 0, grow: 0, saves: 0, shares: 0,
+    home_m: 0, home_a: 0, home_e: 0, grow_m: 0, grow_a: 0, grow_e: 0,
+    activeDays: 0, prunedActiveDays: 0, homeActiveDays: 0, prunedHomeActiveDays: 0,
+    prunedDays: 0 };
+}
+function emptyRecord(){
+  return { journeys: [], days: {}, totals: zeroTotals(), seen: {}, firstDay: null };
+}
+function salvageJourney(j){
+  if (!j || typeof j !== "object") return null;
+  if (typeof j.id !== "string" || j.id.charAt(0) !== "j") return null;
+  if (typeof j.area !== "string" || j.area === "") return null;
+  if (j.length !== 15 && j.length !== 30) return null;
+  if (!Number.isInteger(j.effectiveLength) || j.effectiveLength < 1 || j.effectiveLength > j.length) return null;
+  if (!validDateStr(j.start)) return null;
+  if (["active", "completed", "ended"].indexOf(j.status) < 0) return null;
+  const closed = j.status !== "active";
+  if (closed && !validDateStr(j.end)) return null;
+  if (!closed && j.end !== undefined) return null;
+  if (!isCount(j.daysReached) || !isCount(j.momentsDone) || !isCount(j.activeDays)) return null;
+  const adopted = j.adopted === undefined ? false : j.adopted;
+  if (typeof adopted !== "boolean") return null;
+  if (adopted){
+    if (!validDateStr(j.adoptedDate)) return null;
+    if (!Number.isInteger(j.judgedDays) || j.judgedDays < 1 || j.judgedDays > j.effectiveLength) return null;
+  } else if (j.adoptedDate !== undefined || j.judgedDays !== undefined) return null;
+  const out = { id: j.id, area: j.area, length: j.length, effectiveLength: j.effectiveLength,
+    start: j.start, status: j.status };
+  if (closed) out.end = j.end;
+  out.daysReached = j.daysReached;
+  out.momentsDone = j.momentsDone;
+  out.activeDays = j.activeDays;
+  if (adopted){ out.adopted = true; out.adoptedDate = j.adoptedDate; out.judgedDays = j.judgedDays; }
+  return out;
+}
+function recordLoad(){
+  let raw = null;
+  try { raw = JSON.parse(localStorage.getItem(RECORD_KEY)); } catch(e){}
+  if (!raw || typeof raw !== "object") return emptyRecord();
+  const rec = emptyRecord();
+  if (Array.isArray(raw.journeys))
+    raw.journeys.forEach(function(j){ const s = salvageJourney(j); if (s) rec.journeys.push(s); });
+  if (raw.days && typeof raw.days === "object")
+    Object.keys(raw.days).forEach(function(k){
+      const e = raw.days[k];
+      if (validDateStr(k) && e && typeof e === "object" &&
+          isCount(e.home) && isCount(e.grow) && isCount(e.saves) && isCount(e.shares))
+        rec.days[k] = { home: e.home, grow: e.grow, saves: e.saves, shares: e.shares };
+    });
+  if (raw.totals && typeof raw.totals === "object")
+    Object.keys(rec.totals).forEach(function(k){ if (isCount(raw.totals[k])) rec.totals[k] = raw.totals[k]; });
+  if (raw.seen && typeof raw.seen === "object")
+    Object.keys(raw.seen).forEach(function(k){ if (raw.seen[k] === true) rec.seen[k] = true; });
+  if (validDateStr(raw.firstDay)) rec.firstDay = raw.firstDay;
+  else if (rec.journeys.length)
+    rec.firstDay = rec.journeys.map(function(j){ return j.start; }).sort()[0];
+  return rec;
+}
+function recordWrite(rec){
+  const out = { journeys: rec.journeys, days: rec.days, totals: rec.totals, seen: rec.seen };
+  if (rec.firstDay) out.firstDay = rec.firstDay;
+  try { localStorage.setItem(RECORD_KEY, JSON.stringify(out)); return true; }
+  catch(e){ return false; }
+}
+function refreshRecordFail(){
+  const ids = ["homeRecordFail", "growRecordFail", "bibleRecordFail", "savedRecordFail",
+    "settingsRecordFail", "profileRecordFail", "analyticsRecordFail"];
+  for (let i = 0; i < ids.length; i++){
+    const n = el(ids[i]);
+    if (n) n.hidden = !recordSaveFailed;
+  }
+}
+function noteWrite(ok){
+  recordSaveFailed = !ok;
+  refreshRecordFail();
+}
+function activeJourneyFor(rec, g){
+  if (!g) return null;
+  for (let i = 0; i < rec.journeys.length; i++){
+    const j = rec.journeys[i];
+    if (j.status === "active" && j.area === g.area && j.start === g.start) return j;
+  }
+  return null;
+}
+function enforceDayCap(rec){
+  const keys = Object.keys(rec.days).sort();
+  while (keys.length > 31){
+    const old = keys.shift();
+    const e = rec.days[old];
+    if (e.home + e.grow > 0){
+      rec.totals.prunedActiveDays += 1;
+      rec.totals.activeDays = Math.max(0, rec.totals.activeDays - 1);
+      if (e.home > 0){
+        rec.totals.prunedHomeActiveDays += 1;
+        rec.totals.homeActiveDays = Math.max(0, rec.totals.homeActiveDays - 1);
+      }
+    }
+    rec.totals.prunedDays += 1;
+    delete rec.days[old];
+  }
+}
+function pruneRecord(rec, today){
+  const aj = activeJourneyFor(rec, growLoad());
+  const keepId = aj ? aj.id : null;
+  Object.keys(rec.seen).forEach(function(k){
+    if (k.indexOf("J|") === 0){
+      if (k.split("|")[1] !== keepId) delete rec.seen[k];
+    } else if (k.indexOf("G|") === 0){
+      if (k.split("|")[2] !== today) delete rec.seen[k];
+    }
+  });
+  enforceDayCap(rec);
+}
+function ensureDay(rec, today){
+  if (!rec.days[today]) rec.days[today] = { home: 0, grow: 0, saves: 0, shares: 0 };
+  return rec.days[today];
+}
+function slotLetter(slot){
+  return slot === "morning" ? "m" : slot === "afternoon" ? "a" : "e";
+}
+function recordMoment(mode, contentId, slot){
+  const today = growLocalDateStr(new Date());
+  if (mode === "grow") adoptStoredSeason();
+  const rec = recordLoad();
+  pruneRecord(rec, today);
+  let key, journey = null;
+  if (mode === "grow"){
+    journey = activeJourneyFor(rec, growLoad());
+    if (!journey){ refreshRecordFail(); return; }
+    key = "J|" + journey.id + "|" + journey.start + "|" + contentId + "|" + slot;
+  } else {
+    key = "G|" + contentId + "|" + today + "|" + slot;
+  }
+  if (!rec.seen[key]){
+    rec.seen[key] = true;
+    if (!rec.firstDay) rec.firstDay = today;
+    const day = ensureDay(rec, today);
+    const wasActive = (day.home + day.grow) > 0;
+    if (mode === "grow"){
+      const wasGrowActive = day.grow > 0;
+      day.grow += 1;
+      rec.totals.grow += 1;
+      rec.totals["grow_" + slotLetter(slot)] += 1;
+      journey.momentsDone += 1;
+      if (!wasGrowActive) journey.activeDays += 1;
+    } else {
+      const wasHomeActive = day.home > 0;
+      day.home += 1;
+      rec.totals.home += 1;
+      rec.totals["home_" + slotLetter(slot)] += 1;
+      if (!wasHomeActive) rec.totals.homeActiveDays += 1;
+    }
+    if (!wasActive) rec.totals.activeDays += 1;
+  }
+  enforceDayCap(rec);
+  noteWrite(recordWrite(rec));
+}
+function recordSave(){
+  const today = growLocalDateStr(new Date());
+  const rec = recordLoad();
+  pruneRecord(rec, today);
+  if (!rec.firstDay) rec.firstDay = today;
+  ensureDay(rec, today).saves += 1;
+  rec.totals.saves += 1;
+  enforceDayCap(rec);
+  noteWrite(recordWrite(rec));
+}
+function recordShare(){
+  const today = growLocalDateStr(new Date());
+  const rec = recordLoad();
+  pruneRecord(rec, today);
+  if (!rec.firstDay) rec.firstDay = today;
+  ensureDay(rec, today).shares += 1;
+  rec.totals.shares += 1;
+  enforceDayCap(rec);
+  noteWrite(recordWrite(rec));
+}
+function journeyBegin(g, adoptedFlag){
+  if (!g){
+    recordSaveFailed = true;
+    refreshRecordFail();
+    return;
+  }
+  const today = growLocalDateStr(new Date());
+  const rec = recordLoad();
+  pruneRecord(rec, today);
+  if (!rec.firstDay) rec.firstDay = today;
+  let maxId = 0;
+  rec.journeys.forEach(function(j){
+    const n = parseInt(j.id.slice(1), 10);
+    if (!isNaN(n) && n > maxId) maxId = n;
+  });
+  const L = growEffectiveLength(g);
+  const jr = { id: "j" + (maxId + 1), area: g.area, length: g.length, effectiveLength: L,
+    start: g.start, status: "active",
+    daysReached: Math.min(Math.max(growSeasonDay(g), 1), L),
+    momentsDone: 0, activeDays: 0 };
+  if (adoptedFlag){
+    jr.adopted = true;
+    jr.adoptedDate = today;
+    jr.judgedDays = L - growSeasonDay(g) + 1;
+  }
+  rec.journeys.push(jr);
+  enforceDayCap(rec);
+  noteWrite(recordWrite(rec));
+}
+function adoptStoredSeason(){
+  const g = growLoad();
+  if (!g) return;
+  if (!validDateStr(g.start)) return;
+  if (growSeasonDay(g) > growEffectiveLength(g)) return;
+  const rec = recordLoad();
+  for (let i = 0; i < rec.journeys.length; i++)
+    if (rec.journeys[i].area === g.area && rec.journeys[i].start === g.start) return;
+  journeyBegin(g, true);
+}
+function journeySync(){
+  adoptStoredSeason();
+  const g = growLoad();
+  if (!g || !validDateStr(g.start)){ refreshRecordFail(); return; }
+  const rec = recordLoad();
+  let match = null, changed = false;
+  const kept = [];
+  for (let i = 0; i < rec.journeys.length; i++){
+    const j = rec.journeys[i];
+    if (j.status === "active" && j.area === g.area && j.start === g.start){
+      if (!match){ match = j; kept.push(j); }
+      else changed = true;
+    } else kept.push(j);
+  }
+  if (!match){ refreshRecordFail(); return; }
+  rec.journeys = kept;
+  const L = match.effectiveLength;
+  const sd = growSeasonDay(g);
+  const capped = Math.min(sd, L);
+  if (match.daysReached !== capped){ match.daysReached = capped; changed = true; }
+  if (sd > L){
+    match.end = addDaysIso(match.start, L - 1);
+    match.daysReached = L;
+    const basis = match.adopted ? match.judgedDays : L;
+    match.status = match.activeDays === basis ? "completed" : "ended";
+    changed = true;
+  }
+  if (changed) noteWrite(recordWrite(rec));
+  else refreshRecordFail();
+}
+
+/* ===== Profile view ===== */
+function pictureFail(kind){
+  el("profilePicError").hidden = kind !== "read";
+  el("profileTooLarge").hidden = kind !== "large";
+}
+function handlePictureFile(file){
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  const img = new Image();
+  img.onload = function(){
+    URL.revokeObjectURL(url);
+    const side = Math.min(img.naturalWidth, img.naturalHeight);
+    if (!side){ pictureFail("read"); return; }
+    const sx = (img.naturalWidth - side) / 2, sy = (img.naturalHeight - side) / 2;
+    const steps = [[256, 0.85], [256, 0.7], [256, 0.55], [192, 0.7]];
+    let found = null;
+    for (let i = 0; i < steps.length; i++){
+      const cv = document.createElement("canvas");
+      cv.width = steps[i][0]; cv.height = steps[i][0];
+      const ctx = cv.getContext("2d");
+      ctx.imageSmoothingEnabled = true;
+      ctx.imageSmoothingQuality = "high";
+      ctx.drawImage(img, sx, sy, side, side, 0, 0, steps[i][0], steps[i][0]);
+      const du = cv.toDataURL("image/jpeg", steps[i][1]);
+      if (du.length < 60000){ found = du; break; }
+    }
+    if (!found){ pictureFail("large"); return; }
+    pictureFail(null);
+    profilePicDraft = found;
+    const pv = el("profilePreview");
+    pv.src = found;
+    pv.hidden = false;
+    syncProfileSaveState();
+  };
+  img.onerror = function(){ URL.revokeObjectURL(url); pictureFail("read"); };
+  img.src = url;
+}
+function syncProfileSaveState(){
+  const name = el("profileName").value.trim();
+  const hasPic = !!profilePicDraft;
+  el("profileSave").disabled = !(name !== "" && hasPic);
+  const hint = el("profileHint");
+  if (name === "" && !hasPic){ hint.textContent = "Add your full name and your picture to save your profile."; hint.hidden = false; }
+  else if (name === ""){ hint.textContent = "Add your full name to save your profile."; hint.hidden = false; }
+  else if (!hasPic){ hint.textContent = "Choose your picture to save your profile."; hint.hidden = false; }
+  else hint.hidden = true;
+}
+function seasonInProgress(){
+  const g = growLoad();
+  return !!g && validDateStr(g.start) && growSeasonDay(g) <= growEffectiveLength(g);
+}
+function wireConfirm(btnId, boxId, confirmId, cancelId, midId, onConfirm){
+  const btn = el(btnId), box = el(boxId);
+  btn.addEventListener("click", function(){
+    btn.hidden = true;
+    if (midId) el(midId).hidden = !seasonInProgress();
+    box.hidden = false;
+    el(confirmId).focus();
+  });
+  el(cancelId).addEventListener("click", function(){
+    box.hidden = true;
+    btn.hidden = false;
+    btn.focus();
+  });
+  el(confirmId).addEventListener("click", function(){
+    box.hidden = true;
+    btn.hidden = false;
+    onConfirm();
+  });
+}
+function renderProfile(){
+  refreshRecordFail();
+  const prof = profileLoad();
+  el("profileGateLine").hidden = !profileGateNote;
+  profileGateNote = false;
+  const savedBlock = el("profileSavedBlock"), form = el("profileForm");
+  if (prof && !profileEditing){
+    savedBlock.hidden = false;
+    form.hidden = true;
+    el("profilePicView").src = prof.pic;
+    el("profileNameView").textContent = prof.name;
+  } else {
+    savedBlock.hidden = true;
+    form.hidden = false;
+    el("profileUnreadable").hidden = !!prof || !profileKeyPresent();
+    el("profileSetupClearRow").hidden = !!prof || !recordKeyPresent();
+    el("profileEditCancel").hidden = !profileEditing;
+    syncProfileSaveState();
+  }
+}
+(function wireProfile(){
+  el("profileName").addEventListener("input", syncProfileSaveState);
+  el("profilePicBtn").addEventListener("click", function(){ el("profilePicInput").click(); });
+  el("profilePicInput").addEventListener("change", function(){
+    if (this.files && this.files[0]) handlePictureFile(this.files[0]);
+    this.value = "";
+  });
+  el("profileSave").addEventListener("click", function(){
+    const name = el("profileName").value.trim();
+    if (name === "" || !profilePicDraft) return;
+    if (!profileStore({ name: name, pic: profilePicDraft })){
+      el("profileStorageError").hidden = false;
+      return;
+    }
+    el("profileStorageError").hidden = true;
+    profileEditing = false;
+    if (gateReturn){
+      gateReturn = false;
+      showView("analytics");
+      return;
+    }
+    renderProfile();
+  });
+  el("profileEdit").addEventListener("click", function(){
+    const prof = profileLoad();
+    if (!prof) return;
+    profileEditing = true;
+    el("profileName").value = prof.name;
+    profilePicDraft = prof.pic;
+    const pv = el("profilePreview");
+    pv.src = prof.pic;
+    pv.hidden = false;
+    pictureFail(null);
+    renderProfile();
+  });
+  el("profileEditCancel").addEventListener("click", function(){
+    const prof = profileLoad();
+    profileEditing = false;
+    if (prof){
+      el("profileName").value = prof.name;
+      profilePicDraft = prof.pic;
+      const pv = el("profilePreview");
+      pv.src = prof.pic;
+      pv.hidden = false;
+    }
+    renderProfile();
+  });
+  el("profileAnalyticsLink").addEventListener("click", function(){ showView("analytics"); });
+  wireConfirm("profileDelete", "profileDeleteBox", "profileDeleteConfirm", "profileDeleteCancel", null,
+    function(){
+      try { localStorage.removeItem(PROFILE_KEY); } catch(e){}
+      profileEditing = false;
+      profilePicDraft = null;
+      el("profileName").value = "";
+      el("profilePreview").hidden = true;
+      renderProfile();
+    });
+  const clearRecord = function(){
+    try { localStorage.removeItem(RECORD_KEY); } catch(e){}
+    renderProfile();
+  };
+  wireConfirm("profileClear", "profileClearBox", "profileClearConfirm", "profileClearCancel", "profileClearMid", clearRecord);
+  wireConfirm("profileSetupClear", "profileSetupClearBox", "profileSetupClearConfirm", "profileSetupClearCancel", "profileSetupClearMid", clearRecord);
+})();
+
+/* ===== Analytics view ===== */
+function denomOf(j){ return j.adopted ? j.judgedDays : j.effectiveLength; }
+function adoptedLine(j){
+  return "Recording began during this journey, on " + displayDate(j.adoptedDate) +
+    ". This journey's moments and days before that date were not recorded, so its counts start from that date, and it is counted on the days from that date. Its moments are counted against those days, three a day.";
+}
+function chosenLine(j){
+  return "You chose " + j.length + " days; the " + j.area + " journey holds " + j.effectiveLength + " days.";
+}
+function journeyRowText(j){
+  const denom = denomOf(j);
+  let s = j.area + ", " + j.effectiveLength + " days, ";
+  if (j.status === "completed")
+    s += "completed. Started " + displayDate(j.start) + ", finished " + displayDate(j.end) + ".";
+  else if (j.status === "ended")
+    s += "season ended. Started " + displayDate(j.start) + ", ended " + displayDate(j.end) + ".";
+  else
+    s += "in progress. Started " + displayDate(j.start) + ", now on day " + j.daysReached + ".";
+  s += " Days used: " + j.activeDays + " of " + denom + (j.adopted ? " recorded days." : ".");
+  s += " Moments completed: " + j.momentsDone + " of " + (denom * 3) + ".";
+  if (j.length !== j.effectiveLength) s += " " + chosenLine(j);
+  if (j.adopted) s += " " + adoptedLine(j);
+  return s;
+}
+function xmlEsc(s){
+  return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;");
+}
+function num2(x){ return Math.round(x * 100) / 100; }
+function computePie(totals){
+  const counts = [totals.home_m + totals.grow_m, totals.home_a + totals.grow_a,
+    totals.home_e + totals.grow_e];
+  const total = counts[0] + counts[1] + counts[2];
+  if (total === 0) return null;
+  const pct = counts.map(function(c){ return Math.floor(c * 100 / total); });
+  let rem = 100 - (pct[0] + pct[1] + pct[2]);
+  const order = [0, 1, 2].sort(function(a, b){
+    const fa = counts[a] * 100 / total - pct[a], fb = counts[b] * 100 / total - pct[b];
+    return fb - fa || a - b;
+  });
+  for (let i = 0; i < rem; i++) pct[order[i % 3]] += 1;
+  return { counts: counts, pct: pct, total: total };
+}
+function chartPie(totals){
+  const st = computePie(totals);
+  if (!st) return "";
+  const names = ["morning", "afternoon", "evening"];
+  const fills = ["var(--mid)", "var(--soft)", "var(--ice)"];
+  const ops = ["1", "0.65", "0.85"];
+  const present = st.counts.filter(function(c){ return c > 0; }).length;
+  let inner = "";
+  if (present === 1){
+    const i = st.counts.findIndex(function(c){ return c > 0; });
+    inner = '<circle cx="100" cy="100" r="90" fill="' + fills[i] + '" fill-opacity="' + ops[i] +
+      '" stroke="var(--mid)" stroke-width="2" data-slot="' + names[i] + '" data-count="' + st.counts[i] + '"/>';
+  } else {
+    let ang = -Math.PI / 2;
+    for (let i = 0; i < 3; i++){
+      if (!st.counts[i]) continue;
+      const sweep = st.counts[i] / st.total * Math.PI * 2;
+      const a1 = ang, a2 = ang + sweep;
+      const x1 = 100 + 90 * Math.cos(a1), y1 = 100 + 90 * Math.sin(a1);
+      const x2 = 100 + 90 * Math.cos(a2), y2 = 100 + 90 * Math.sin(a2);
+      inner += '<path d="M100 100 L' + num2(x1) + " " + num2(y1) + " A90 90 0 " +
+        (sweep > Math.PI ? 1 : 0) + " 1 " + num2(x2) + " " + num2(y2) + ' Z" fill="' + fills[i] +
+        '" fill-opacity="' + ops[i] + '" stroke="var(--mid)" stroke-width="2" data-slot="' +
+        names[i] + '" data-count="' + st.counts[i] + '"/>';
+      ang = a2;
+    }
+  }
+  const aria = "Moments by time of day pie chart. Morning: " + st.counts[0] + " (" + st.pct[0] +
+    "%). Afternoon: " + st.counts[1] + " (" + st.pct[1] + "%). Evening: " + st.counts[2] +
+    " (" + st.pct[2] + "%).";
+  return '<svg id="chartPie" viewBox="0 0 200 200" role="img" aria-label="' + aria + '">' + inner + "</svg>";
+}
+function chartBars(journeys){
+  const order = [], sums = {};
+  journeys.forEach(function(j){
+    if (!(j.area in sums)){ sums[j.area] = 0; order.push(j.area); }
+    sums[j.area] += j.momentsDone;
+  });
+  if (!order.length) return "";
+  let max = 0, maxArea = order[0];
+  order.forEach(function(a){ if (sums[a] > max){ max = sums[a]; maxArea = a; } });
+  let rows = "";
+  order.forEach(function(area, i){
+    const cy = i * 32 + 16;
+    const w = max > 0 ? sums[area] / max * 152 : 0;
+    const label = area.length > 18 ? area.slice(0, 17) + "\u2026" : area;
+    rows += '<text x="0" y="' + (cy + 4) + '" font-size="11" fill="var(--on-card)">' + xmlEsc(label) + "</text>";
+    rows += '<rect x="112" y="' + (cy - 9) + '" width="' + num2(w) + '" height="18" fill="var(--mid)" data-area="' +
+      xmlEsc(area) + '" data-moments="' + sums[area] + '"/>';
+    rows += '<text x="' + num2(112 + w + 6) + '" y="' + (cy + 4) + '" font-size="11" fill="var(--on-card)">' + sums[area] + "</text>";
+  });
+  const aria = "Moments in each Grow area bar chart. " + order.length + " areas shown. Largest: " +
+    xmlEsc(maxArea) + " with " + max + " moments.";
+  return '<svg id="chartBars" viewBox="0 0 300 ' + (order.length * 32) + '" role="img" aria-label="' +
+    aria + '">' + rows + "</svg>";
+}
+function chartLine(days, todayIso){
+  const now = new Date();
+  const base = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const dates = [];
+  for (let i = 29; i >= 0; i--){
+    const d = new Date(base.getFullYear(), base.getMonth(), base.getDate());
+    d.setDate(d.getDate() - i);
+    dates.push(growLocalDateStr(d));
+  }
+  const mom = dates.map(function(iso){ const e = days[iso]; return e ? e.home + e.grow : 0; });
+  const oth = dates.map(function(iso){ const e = days[iso]; return e ? e.saves + e.shares : 0; });
+  if (mom.every(function(v){ return v === 0; }) && oth.every(function(v){ return v === 0; })) return "";
+  const maxV = Math.max(3, Math.max.apply(null, mom), Math.max.apply(null, oth));
+  const X = function(i){ return 28 + i * 268 / 29; };
+  const Y = function(v){ return 152 - v * 144 / maxV; };
+  let s = "";
+  function series(vals, stroke, dash, filled, seriesName){
+    let pts = "";
+    vals.forEach(function(v, i){ pts += num2(X(i)) + "," + num2(Y(v)) + " "; });
+    s += '<polyline points="' + pts.trim() + '" fill="none" stroke="' + stroke + '" stroke-width="2"' +
+      (dash ? ' stroke-dasharray="5 4"' : "") + "/>";
+    vals.forEach(function(v, i){
+      s += '<circle cx="' + num2(X(i)) + '" cy="' + num2(Y(v)) + '" r="3" ' +
+        (filled ? 'fill="' + stroke + '"' : 'fill="none" stroke="' + stroke + '" stroke-width="2"') +
+        ' data-series="' + seriesName + '" data-date="' + dates[i] + '" data-count="' + v + '"/>';
+    });
+  }
+  series(mom, "var(--soft)", false, true, "moments");
+  series(oth, "var(--mid)", true, false, "other");
+  function hiLabel(vals, ownBelow){
+    let bi = 0;
+    vals.forEach(function(v, i){ if (v > vals[bi]) bi = i; });
+    const x = X(bi), y = Y(vals[bi]);
+    let below = y < 14;
+    if (ownBelow) below = true;
+    let anchor = "middle";
+    if (x - 28 < 20) anchor = "end";
+    else if (296 - x < 20) anchor = "start";
+    return { x: x, y: below ? y + 14 : y - 4, anchor: anchor, text: String(vals[bi]), idx: bi, below: below };
+  }
+  const lm = hiLabel(mom, false), lo = hiLabel(oth, false);
+  const sameSide = lm.below === lo.below;
+  if (Math.abs(lm.x - lo.x) < 16 && sameSide && !lo.below)
+    lo.y = Y(oth[lo.idx]) + 14;
+  s += '<text x="' + num2(lm.x) + '" y="' + num2(lm.y) + '" font-size="10" fill="var(--on-card)" text-anchor="' + lm.anchor + '">' + lm.text + "</text>";
+  s += '<text x="' + num2(lo.x) + '" y="' + num2(lo.y) + '" font-size="10" fill="var(--on-card)" text-anchor="' + lo.anchor + '">' + lo.text + "</text>";
+  s += '<text x="24" y="11" font-size="10" fill="var(--on-card)" text-anchor="end">' + maxV + "</text>";
+  s += '<text x="24" y="155" font-size="10" fill="var(--on-card)" text-anchor="end">0</text>';
+  s += '<text x="28" y="172" font-size="10" fill="var(--on-card)" text-anchor="start">' + displayDate(dates[0]) + "</text>";
+  s += '<text x="296" y="172" font-size="10" fill="var(--on-card)" text-anchor="end">' + displayDate(dates[29]) + "</text>";
+  const aria = "Your last 30 days line chart. From " + displayDate(dates[0]) + " to " +
+    displayDate(dates[29]) + ". Moments highest: " + Math.max.apply(null, mom) +
+    ". Saves and shares highest: " + Math.max.apply(null, oth) + ".";
+  return '<svg id="chartLine" viewBox="0 0 300 180" role="img" aria-label="' + aria + '">' + s + "</svg>";
+}
+function pLine(text, cls){
+  const p = document.createElement("p");
+  p.className = cls || "formline";
+  p.textContent = text;
+  return p;
+}
+function renderAnalytics(){
+  journeySync();
+  refreshRecordFail();
+  const prof = profileLoad();
+  if (!prof) return;
+  const rec = recordLoad();
+  el("analyticsPic").src = prof.pic;
+  el("analyticsName").textContent = prof.name;
+  const t = rec.totals;
+  let completed = 0, ended = 0;
+  rec.journeys.forEach(function(j){
+    if (j.status === "completed") completed++;
+    if (j.status === "ended") ended++;
+  });
+  const totalsBox = el("analyticsTotals");
+  totalsBox.innerHTML = "";
+  [["Journeys begun", rec.journeys.length],
+   ["Journeys completed", completed],
+   ["Seasons ended", ended],
+   ["Days you were active", t.activeDays + t.prunedActiveDays],
+   ["Moments completed", t.home + t.grow],
+   ["Saves made", t.saves],
+   ["Shares begun", t.shares]].forEach(function(pair){
+    totalsBox.appendChild(pLine(pair[0] + ": " + pair[1], "totalline"));
+  });
+  /* current journey */
+  const now = el("journeyNow");
+  now.innerHTML = "";
+  let active = null;
+  const gNow = growLoad();
+  for (let i = 0; i < rec.journeys.length; i++){
+    const j = rec.journeys[i];
+    if (j.status !== "active") continue;
+    if (gNow && j.area === gNow.area && j.start === gNow.start){ active = j; break; }
+    if (!active) active = j;
+  }
+  if (active){
+    now.hidden = false;
+    const denom = denomOf(active);
+    const title = document.createElement("div");
+    title.className = "settingslabel";
+    title.textContent = "Your journey now";
+    now.appendChild(title);
+    const l1 = active.area + ". Day " + active.daysReached + " of " + active.effectiveLength +
+      " on the calendar. Days used: " + active.activeDays + " of " + denom +
+      (active.adopted ? " recorded days." : ".");
+    now.appendChild(pLine(l1));
+    const cap = pLine("Days used", "progcap");
+    now.appendChild(cap);
+    const wrap = document.createElement("div");
+    wrap.className = "progtrackwrap";
+    const track = document.createElement("div");
+    track.className = "progtrack";
+    const fill = document.createElement("div");
+    fill.className = "progfill";
+    fill.style.width = (denom > 0 ? Math.min(100, active.activeDays / denom * 100) : 0) + "%";
+    wrap.appendChild(track);
+    wrap.appendChild(fill);
+    now.appendChild(wrap);
+    now.appendChild(pLine("Moments completed: " + active.momentsDone + " of " + (denom * 3) + "."));
+    if (active.length !== active.effectiveLength) now.appendChild(pLine(chosenLine(active)));
+    if (active.adopted) now.appendChild(pLine(adoptedLine(active)));
+  } else now.hidden = true;
+  /* history */
+  const hist = el("journeyHistory");
+  hist.innerHTML = "";
+  if (!rec.journeys.length){
+    hist.appendChild(pLine("No journeys yet. Begin a season in Grow and it will be recorded here.", "emptyline"));
+    hist.appendChild(pLine("A record made at the other Verse Affirmation link stays at that link; each link keeps its own.", "emptyline"));
+    const link = document.createElement("button");
+    link.type = "button";
+    link.className = "backlink";
+    link.id = "journeyHistoryOpenGrow";
+    link.textContent = "Open Grow";
+    link.addEventListener("click", function(){ showView("grow"); });
+    hist.appendChild(link);
+  } else {
+    rec.journeys.slice().reverse().forEach(function(j){
+      hist.appendChild(pLine(journeyRowText(j), "historyrow"));
+    });
+  }
+  /* pie */
+  const pieStats = computePie(t);
+  const pieHolder = el("chartPieHolder"), pieLegend = el("chartPieLegend");
+  pieHolder.innerHTML = "";
+  pieLegend.innerHTML = "";
+  if (!pieStats){
+    pieHolder.appendChild(pLine("No moments recorded yet. Complete a moment and it will be counted here.", "emptyline"));
+  } else {
+    const wrap = document.createElement("div");
+    wrap.className = "piewrap";
+    wrap.innerHTML = chartPie(t);
+    pieHolder.appendChild(wrap);
+    pieLegend.appendChild(pLine("Home and Grow together: " + pieStats.total +
+      (pieStats.total === 1 ? " moment." : " moments."), "legendline"));
+    const slotNames = ["Morning", "Afternoon", "Evening"];
+    const fills = ["var(--mid)", "var(--soft)", "var(--ice)"];
+    const ops = ["1", "0.65", "0.85"];
+    for (let i = 0; i < 3; i++){
+      const p = document.createElement("p");
+      p.className = "legendline";
+      const sw = document.createElement("span");
+      sw.className = "swatch";
+      sw.style.background = fills[i];
+      sw.style.border = "2px solid var(--mid)";
+      sw.style.opacity = ops[i];
+      p.appendChild(sw);
+      p.appendChild(document.createTextNode(slotNames[i] + ": " + pieStats.counts[i] +
+        " (" + pieStats.pct[i] + "%)"));
+      pieLegend.appendChild(p);
+    }
+  }
+  /* bars */
+  const barsHolder = el("chartBarsHolder");
+  barsHolder.innerHTML = "";
+  if (!rec.journeys.length){
+    barsHolder.appendChild(pLine("No journeys yet. Begin a season in Grow and it will be recorded here.", "emptyline"));
+  } else {
+    barsHolder.innerHTML = chartBars(rec.journeys);
+    const begun = {};
+    rec.journeys.forEach(function(j){ begun[j.area] = true; });
+    const absent = GROW_AREAS.map(function(a){ return a.name; }).filter(function(a){ return !begun[a]; });
+    if (absent.length)
+      barsHolder.appendChild(pLine("Areas not yet begun: " + absent.join(", ") + ".", "emptyline"));
+  }
+  /* line */
+  const lineHolder = el("chartLineHolder"), lineLegend = el("chartLineLegend");
+  lineHolder.innerHTML = "";
+  lineLegend.innerHTML = "";
+  const lineSvg = chartLine(rec.days, growLocalDateStr(new Date()));
+  if (!lineSvg){
+    lineHolder.appendChild(pLine("No activity recorded yet in the last 30 days.", "emptyline"));
+  } else {
+    lineHolder.innerHTML = lineSvg;
+    const todayIso = growLocalDateStr(new Date());
+    const te = rec.days[todayIso] || { home: 0, grow: 0, saves: 0, shares: 0 };
+    const nMom = te.home + te.grow, nOth = te.saves + te.shares;
+    lineLegend.innerHTML =
+      '<p class="legendline"><svg width="34" height="12" viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6" stroke="var(--soft)" stroke-width="2"/><circle cx="17" cy="6" r="3" fill="var(--soft)"/></svg> Moments</p>' +
+      '<p class="legendline"><svg width="34" height="12" viewBox="0 0 34 12" aria-hidden="true"><line x1="1" y1="6" x2="33" y2="6" stroke="var(--mid)" stroke-width="2" stroke-dasharray="5 4"/><circle cx="17" cy="6" r="3" fill="none" stroke="var(--mid)" stroke-width="2"/></svg> Saves and shares</p>';
+    lineLegend.appendChild(pLine("Today: " + nMom + (nMom === 1 ? " moment" : " moments") +
+      ", and " + nOth + " saves and shares together.", "legendline"));
+  }
+  /* General block */
+  const gen = el("generalBlock");
+  gen.innerHTML = "";
+  if (t.home === 0){
+    gen.appendChild(pLine("No moments recorded yet on Home. Complete a moment on Home and it will be counted here.", "emptyline"));
+  } else {
+    gen.appendChild(pLine("General moments completed: " + t.home + "."));
+    gen.appendChild(pLine("Morning: " + t.home_m + ". Afternoon: " + t.home_a + ". Evening: " + t.home_e + "."));
+    gen.appendChild(pLine("Days you were active on Home: " + (t.homeActiveDays + t.prunedHomeActiveDays) + "."));
+  }
+  /* closing lines */
+  const closing = el("analyticsClosing");
+  closing.innerHTML = "";
+  if (rec.firstDay)
+    closing.appendChild(pLine("Recording began on " + displayDate(rec.firstDay) +
+      ". Only journeys and moments recorded from that day on are in this record."));
+  else
+    closing.appendChild(pLine("Recording begins with your first completed moment, save, share, or the start of a journey."));
+  if (t.prunedDays > 0)
+    closing.appendChild(pLine("Daily detail is kept for the most recent 31 days, so the last 30 days in the chart are always whole. Your totals hold everything."));
+}
+el("analyticsBack").addEventListener("click", function(){ showView("profile"); });
+
+adoptStoredSeason();
+refreshRecordFail();
 
 render(currentDay);
 if (bibleVersion !== "kjv") loadBibleData(bibleVersion).then(function(){ if (bibleDataCache[bibleVersion]) applyHomeVerse(); });
