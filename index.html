@@ -1964,6 +1964,11 @@ function wrapLines(ctx, text, maxWidth){
   if(line) lines.push(line);
   return lines;
 }
+/* Share picture: 1080x1350 (4 by 5), the feed fit size. Joel, Nov 16, 2026:
+   the tall 1080x1920 card was truncated in feeds (Lemon8 first, the same on
+   the other platforms), so only this share picture changed size; the app
+   itself is untouched. The fit loop below shrinks the type until the whole
+   verse, affirmation, and action stand inside the 1350 height. */
 function buildCardCanvas(e, slotLabel){
   const rv = resolveVerse(e);
   const pal = cardPal();
@@ -1972,7 +1977,7 @@ function buildCardCanvas(e, slotLabel){
   const slotH = 60;
   const maxW = W - marginX * 2;
   const measure = document.createElement("canvas").getContext("2d");
-  let scale = 1, layout = null, H = 1920;
+  let scale = 1, layout = null, H = 1350;
   for(let i = 0; i < 60; i++){
     const vs = Math.round(56 * scale), bs = Math.round(42 * scale);
     const labelH = 32 * scale + 22, refH = 42 * scale + 20, gap = 54 * scale;
@@ -1987,8 +1992,8 @@ function buildCardCanvas(e, slotLabel){
       labelH + actLines.length * bs * 1.5;
     layout = { scale: scale, vs: vs, bs: bs, labelH: labelH, refH: refH, gap: gap, divH: divH,
       verseLines: verseLines, affLines: affLines, actLines: actLines };
-    if(topPad + slotH + contentH + bottomPad <= 1920){ H = 1920; break; }
-    if(scale <= 0.5){ H = Math.ceil(topPad + slotH + contentH + bottomPad); break; }
+    if(topPad + slotH + contentH + bottomPad <= 1350){ H = 1350; break; }
+    if(scale <= 0.45){ H = Math.ceil(topPad + slotH + contentH + bottomPad); break; }
     scale = Math.round((scale - 0.025) * 1000) / 1000;
   }
   const canvas = document.createElement("canvas");
