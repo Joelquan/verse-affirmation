@@ -188,6 +188,11 @@
     text-align:left;
   }
   .scene svg{display:block;width:100%;height:100%;}
+  .scene{background-size:cover;background-position:center;}
+  .scene[data-time="morning"]{background-image:url("scene-morning.jpg");}
+  .scene[data-time="afternoon"]{background-image:url("scene-afternoon.jpg");}
+  .scene[data-time="evening"]{background-image:url("scene-evening.jpg");}
+  #sceneArt,#growSceneArt{display:none;}
   .scene .greet{
     position:absolute;top:0;left:0;right:0;padding:15px 19px 30px;
     color:#FFFFFF;
